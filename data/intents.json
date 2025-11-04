@@ -1,0 +1,7 @@
+{
+  "joy": ["That's wonderful! Tell me more!", "Love the energy — what's next?"],
+  "sadness": ["I'm sorry you're feeling low. Want to talk?", "I hear you — I'm here with you."],
+  "anger": ["I can sense frustration. Want to vent?", "Let's unpack what's upsetting you."],
+  "fear": ["You're not alone. Want to describe what's scaring you?", "We can take small steps together."],
+  "neutral": ["Got it. What's on your mind?", "I'm here — tell me more."]
+}

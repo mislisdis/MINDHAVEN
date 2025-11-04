@@ -1,0 +1,12 @@
+{
+  "sadness": [
+    { "title": "How to cope with sadness", "url": "https://www.example.com/sadness" },
+    { "title": "Local support groups", "url": "https://www.example.com/support" }
+  ],
+  "joy": [
+    { "title": "Celebrate your wins", "url": "https://www.example.com/celebrate" }
+  ],
+  "neutral": [
+    { "title": "Mindfulness basics", "url": "https://www.example.com/mindfulness" }
+  ]
+}
