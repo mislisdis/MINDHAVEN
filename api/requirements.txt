@@ -1,0 +1,8 @@
+flask
+joblib
+scikit-learn
+numpy
+torch
+transformers
+optuna
+datasets
