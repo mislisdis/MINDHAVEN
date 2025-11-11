@@ -5,4 +5,5 @@ node_modules/
 .env
 
 # Large ML models
-/src/api/emotion_model_cpu.py
+/api/emotion_model_cpu.py
+/api/tokenizer_cpu.py
