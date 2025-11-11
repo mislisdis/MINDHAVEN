@@ -1,0 +1,30 @@
+{{> header user=user}}
+
+<main class="feedback-page">
+  <h2>Send Feedback</h2>
+
+  {{#if error}}
+    <div class="alert alert-error">{{error}}</div>
+  {{/if}}
+
+  {{#if success}}
+    <div class="alert alert-success">{{success}}</div>
+  {{/if}}
+
+  <form method="POST" action="/feedback">
+    <label>Message</label>
+    <textarea name="message" rows="4" required>{{message}}</textarea>
+
+    <label>Rating (optional)</label>
+    <select name="rating">
+      <option value="">Select rating</option>
+      {{#each [1,2,3,4,5]}}
+        <option value="{{this}}">{{this}}</option>
+      {{/each}}
+    </select>
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+</main>
+
+{{> footer}}

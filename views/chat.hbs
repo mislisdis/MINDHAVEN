@@ -1,0 +1,27 @@
+<!-- views/chat.hbs -->
+
+<div id="chatMessages">
+    {{#each messages}}
+        {{> chatbotCard sender=this.sender text=this.text emotion=this.emotion}}
+    {{/each}}
+</div>
+
+<div class="typing-indicator" id="typingIndicator" style="display:none;">
+    MindHaven is typing...
+</div>
+
+<div class="bot-recommendation" id="recommendation">
+    {{#if recommendation}}
+        <p>{{recommendation}}</p>
+    {{/if}}
+</div>
+
+<form id="chatForm">
+    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
+    <button type="submit">Send</button>
+</form>
+
+<!-- Pass logged-in user ID to frontend -->
+<script>
+    window.USER_ID = '{{user._id}}';
+</script>

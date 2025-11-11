@@ -1,0 +1,29 @@
+{{> header user=user}}
+
+<main class="auth-page">
+  <h2>Register</h2>
+
+  {{#if error}}
+    <div class="alert alert-error">{{error}}</div>
+  {{/if}}
+
+  <form method="POST" action="/api/auth/register">
+    <label>Name</label>
+    <input type="text" name="name" required>
+
+    <label>Email</label>
+    <input type="email" name="email" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <label>Confirm Password</label>
+    <input type="password" name="confirmPassword" required>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p>Already have an account? <a href="/login">Login here</a></p>
+</main>
+
+{{> footer}}

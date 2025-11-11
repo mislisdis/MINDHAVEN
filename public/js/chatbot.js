@@ -1,34 +1,100 @@
+// public/js/chatbot.js
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('chat-form');
-  const chatBox = document.getElementById('chat-box');
+  const form = document.getElementById('chatForm');
+  const chatBox = document.getElementById('chatMessages');
+  const input = document.getElementById('userInput');
+  const recommendationEl = document.getElementById('recommendation');
 
-  if (!form || !chatBox) return;
+  if (!form || !chatBox || !input) return;
 
+  const emotionEmojis = {
+    joy: '😄',
+    sadness: '😢',
+    anger: '😡',
+    fear: '😨',
+    neutral: '😐'
+  };
+
+  // 🧩 Handle form submission
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const input = document.getElementById('user-input');
     const message = input.value.trim();
     if (!message) return;
 
-    chatBox.innerHTML += `<div class="user-msg">${escapeHtml(message)}</div>`;
+    // Append user message immediately
+    appendMessage(message, 'user');
     input.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Typing indicator
+    const typingEl = appendMessage('MindHaven is thinking...', 'bot typing');
 
     try {
       const res = await fetch('/api/chatbot/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, userId: window.USER_ID }) // send logged-in userId
       });
+
       const data = await res.json();
-      chatBox.innerHTML += `<div class="bot-msg">${escapeHtml(data.reply)} <span class="emotion-tag">(${escapeHtml(data.emotion)})</span></div>`;
+      typingEl.remove();
+
+      const emotion = data.emotion ? data.emotion.toLowerCase() : 'neutral';
+      const emoji = emotionEmojis[emotion] || '🤖';
+      const reply = data.reply || 'Sorry, I didn’t quite catch that.';
+
+      appendMessage(`${emoji} ${escapeHtml(reply)} <span class="emotion-tag">(${escapeHtml(emotion)})</span>`, 'bot');
+
+      // Show recommendation if available
+      if (data.recommendation) {
+        recommendationEl.innerHTML = `<p>${escapeHtml(data.recommendation)}</p>`;
+      }
+
       chatBox.scrollTop = chatBox.scrollHeight;
     } catch (err) {
-      chatBox.innerHTML += `<div class="bot-msg">Sorry — something went wrong. (${err.message})</div>`;
+      typingEl.remove();
+      appendMessage(`⚠️ Sorry — something went wrong. (${escapeHtml(err.message)})`, 'bot');
     }
   });
 
+  // 💬 Append a message to the chat box
+  function appendMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.className = sender.includes('bot') ? 'bot-msg' : 'user-msg';
+    if (sender.includes('typing')) msg.classList.add('typing');
+    msg.innerHTML = escapeHtmlExceptTags(text);
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return msg;
+  }
+
+  // ✨ Escape HTML but keep some allowed tags
+  function escapeHtmlExceptTags(s = '') {
+    return s.replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
+  }
+
+  // 🧹 Basic escape
   function escapeHtml(s = '') {
-    return s.replace(/[&<>"']/g, (m) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+    return s.replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
+  }
+
+  // Optional: theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+    });
   }
 });

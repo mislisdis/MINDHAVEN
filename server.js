@@ -18,21 +18,38 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 3️⃣ View engine (Handlebars)
-app.engine('hbs', exphbs.engine({ extname: '.hbs' }));
+app.engine('hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Register partials (reusable UI components)
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
+// 3a️⃣ Register Handlebars helper for emotion emojis
+hbs.registerHelper('getEmoji', (emotion) => {
+  const map = {
+    joy: '😄',
+    sadness: '😢',
+    anger: '😡',
+    fear: '😨',
+    neutral: '😐'
+  };
+  return map[emotion] || '🤖';
+});
+
 // 4️⃣ Routes
 // API routes
 app.use('/api/chatbot', require('./src/routes/chatbotRoutes'));
 app.use('/api/user', require('./src/routes/userRoutes'));
 app.use('/api/feedback', require('./src/routes/feedbackRoutes'));
+app.use('/api/auth', require('./src/routes/authRoutes'));
 
-// UI route
-app.get('/', (req, res) => res.render('index', { title: 'MindHaven Chatbot' }));
+// UI route: redirect root to /chat
+app.get('/', (req, res) => res.redirect('/chat'));
+
+// Chat page route (pre-render messages)
+const { getChatHistory } = require('./src/controllers/chatbotController');
+app.get('/chat', getChatHistory);
 
 // 5️⃣ Error handling middleware
 const { errorHandler } = require('./src/middlewares/errorHandler');

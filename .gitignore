@@ -1,0 +1,8 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Large ML models
+/src/api/emotion_model_cpu.py

@@ -1,0 +1,11 @@
+<!-- views/partials/chatbotCard.hbs -->
+
+<div class="{{sender}}-msg chat-msg">
+    {{#if emotion}}
+        <span class="emoji">{{getEmoji emotion}}</span>
+        <span class="message-text">{{text}}</span>
+        <span class="emotion-tag">({{emotion}})</span>
+    {{else}}
+        <span class="message-text">{{text}}</span>
+    {{/if}}
+</div>

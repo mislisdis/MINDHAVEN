@@ -1,0 +1,16 @@
+<header class="site-header">
+  <div class="logo">
+    <a href="/">🧠 MindHaven</a>
+  </div>
+  <nav class="nav-links">
+    {{#if user}}
+      <span>Welcome, {{user.name}}</span>
+      <a href="/chat">Chat</a>
+      <a href="/feedback">Feedback</a>
+      <a href="/api/auth/logout">Logout</a>
+    {{else}}
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    {{/if}}
+  </nav>
+</header>
