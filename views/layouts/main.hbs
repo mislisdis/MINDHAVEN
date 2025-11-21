@@ -3,44 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindHaven Chatbot</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/chatbot.js" defer></script>
 </head>
 <body>
-    <div class="chatbot-wrapper">
-        <!-- Header -->
-        <header class="chat-header">
-            <h2>MindHaven Chatbot</h2>
-            <button id="themeToggle">Toggle Theme</button>
-        </header>
-
-        <!-- Chat Messages -->
-        <div class="chat-messages" id="chatMessages">
-            {{#each messages}}
-                <div class="message {{this.sender}}">
-                    <p>{{this.text}}</p>
-                </div>
-            {{/each}}
-        </div>
-
-        <!-- Typing Indicator -->
-        <div class="typing-indicator" id="typingIndicator" style="display:none;">
-            MindHaven is typing...
-        </div>
-
-        <!-- Bot Recommendation -->
-        <div class="bot-recommendation" id="recommendation">
-            {{#if recommendation}}
-                <p>{{recommendation}}</p>
-            {{/if}}
-        </div>
-
-        <!-- User Input Form -->
-        <form id="chatForm">
-            <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
-            <button type="submit">Send</button>
-        </form>
-    </div>
+    {{{body}}} <!-- Page-specific content will be injected here -->
 </body>
 </html>
