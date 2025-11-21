@@ -20,6 +20,7 @@ class ConversationLoop {
    * @param {string} userId - optional user id
    * @returns {Promise<{emotion: string, reply: string, resources: Array}>}
    */
+  
   async processMessage(message, userId = null) {
     try {
       if (!message || typeof message !== 'string') {
@@ -36,8 +37,10 @@ class ConversationLoop {
       // ✳️ Analyze emotion using your Flask model API
       const emotion = await analyzeEmotion(message);
 
-      // 🧩 Generate empathetic reply
-      const reply = generateResponse(emotion);
+      // 🧩 Generate empathetic reply (include short context summary if available)
+      const tempHistory = userCtx.history.concat({ message });
+      const replyContext = this.summarizeContext(tempHistory);
+      const reply = generateResponse(emotion, replyContext);
 
       // 📚 Recommend relevant resources
       const resources = recommendForEmotion(emotion);
@@ -59,7 +62,14 @@ class ConversationLoop {
       // Keep only the last 5 messages
       if (userCtx.history.length > 5) userCtx.history.shift();
 
-      return { emotion, reply, resources };
+      const contextSummary = this.summarizeContext(userCtx.history);
+
+      return {
+        emotion,
+        reply,
+        resources,
+        context: contextSummary
+      };
     } catch (err) {
       console.error('ConversationLoop error:', err.message);
       return {
@@ -83,6 +93,12 @@ class ConversationLoop {
    */
   clearContext(userId = null) {
     delete this.context[userId || 'guest'];
+  }
+
+  summarizeContext(history) {
+    if (!history || history.length === 0) return null;
+    const last = history.slice(-3).map(h => h.message);
+    return last.join(" → ");
   }
 }
 

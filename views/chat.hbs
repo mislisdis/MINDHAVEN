@@ -1,25 +1,37 @@
-<!-- views/chat.hbs -->
+<div class="chatbot-wrapper">
+    <!-- Header -->
+    <header class="chat-header">
+        <h2>MindHaven Chatbot</h2>
+        <button id="themeToggle">Toggle Theme</button>
+    </header>
 
-<div id="chatMessages">
-    {{#each messages}}
-        {{> chatbotCard sender=this.sender text=this.text emotion=this.emotion}}
-    {{/each}}
+    <!-- Chat Messages -->
+    <div class="chat-messages" id="chatMessages">
+        {{#each messages}}
+            <div class="message {{this.sender}}">
+                <p>{{this.text}}</p>
+            </div>
+        {{/each}}
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typingIndicator" style="display:none;">
+        MindHaven is typing...
+    </div>
+
+    <!-- Bot Recommendation -->
+    <div class="bot-recommendation" id="recommendation">
+        {{#if recommendation}}
+            <p>{{recommendation}}</p>
+        {{/if}}
+    </div>
+
+    <!-- User Input Form -->
+    <form id="chatForm">
+        <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
+        <button type="submit">Send</button>
+    </form>
 </div>
-
-<div class="typing-indicator" id="typingIndicator" style="display:none;">
-    MindHaven is typing...
-</div>
-
-<div class="bot-recommendation" id="recommendation">
-    {{#if recommendation}}
-        <p>{{recommendation}}</p>
-    {{/if}}
-</div>
-
-<form id="chatForm">
-    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
-    <button type="submit">Send</button>
-</form>
 
 <!-- Pass logged-in user ID to frontend -->
 <script>

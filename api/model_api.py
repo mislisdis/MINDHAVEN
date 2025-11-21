@@ -44,7 +44,12 @@ else:
 # Emotion labels (adjust these based on your model's training)
 # Common emotion classifications: 
 EMOTION_LABELS = [
-    "sadness", "joy", "love", "anger", "fear", "surprise"  # Adjust as needed
+    "admiration", "amusement", "anger", "annoyance", "approval",
+    "caring", "confusion", "curiosity", "desire", "disappointment",
+    "disapproval", "disgust", "embarrassment", "excitement", "fear",
+    "gratitude", "grief", "joy", "love", "nervousness",
+    "optimism", "pride", "realization", "relief", "remorse",
+    "sadness", "surprise", "neutral"
 ]
 
 # ======================================
