@@ -7,13 +7,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!form || !chatBox || !input) return;
 
-  const emotionEmojis = {
-    joy: '😄',
-    sadness: '😢',
-    anger: '😡',
-    fear: '😨',
-    neutral: '😐'
-  };
+ const emotionEmojis = {
+  admiration: "✨",
+  amusement: "😄",
+  anger: "😡",
+  annoyance: "😤",
+  approval: "👍",
+  caring: "🤗",
+  confusion: "😕",
+  curiosity: "🤔",
+  desire: "❤️",
+  disappointment: "😞",
+  disapproval: "👎",
+  disgust: "🤢",
+  embarrassment: "😳",
+  excitement: "🤩",
+  fear: "😨",
+  gratitude: "🙏",
+  grief: "💔",
+  joy: "😊",
+  love: "❤️",
+  nervousness: "😬",
+  optimism: "🌟",
+  pride: "😌",
+  realization: "💡",
+  relief: "😌",
+  remorse: "😣",
+  sadness: "😢",
+  surprise: "😲",
+  neutral: "😐"
+};
+
 
   // 🧩 Handle form submission
   form.addEventListener('submit', async (e) => {
@@ -43,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const emoji = emotionEmojis[emotion] || '🤖';
       const reply = data.reply || 'Sorry, I didn’t quite catch that.';
 
-      appendMessage(`${emoji} ${escapeHtml(reply)} <span class="emotion-tag">(${escapeHtml(emotion)})</span>`, 'bot');
+    appendMessage(`${emoji} ${escapeHtml(reply)}`, 'bot');
 
       // Show recommendation if available
       if (data.recommendation) {

@@ -1,33 +1,39 @@
 // src/controllers/userController.js
 const User = require('../models/User');
 
+const bcrypt = require('bcrypt');
+
 exports.createUser = async (req, res, next) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
-    if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+    if (!name || !email || !password || !confirmPassword) {
+      return res.render('register', { error: 'All fields are required' });
     }
 
-    // ⚠️ Prevent duplicates
+    if (password !== confirmPassword) {
+      return res.render('register', { error: 'Passwords do not match' });
+    }
+
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(400).json({ error: 'Email already registered' });
+      return res.render('register', { error: 'Email already registered' });
     }
 
-    const user = new User({ name, email });
+    // Hash the password
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = new User({ name, email, passwordHash });
     await user.save();
 
-    res.status(201).json({
-      ok: true,
-      message: 'User registered successfully',
-      user,
-    });
+    return res.redirect('/login');
+
   } catch (err) {
     console.error('UserController error:', err.message);
     next(err);
   }
 };
+
 
 exports.listUsers = async (req, res, next) => {
   try {
@@ -37,3 +43,4 @@ exports.listUsers = async (req, res, next) => {
     next(err);
   }
 };
+
