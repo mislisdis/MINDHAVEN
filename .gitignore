@@ -7,3 +7,5 @@ node_modules/
 # Large ML models
 /api/emotion_model_cpu.py
 /api/tokenizer_cpu.py
+/api/emotion_model.pkl
+/api/emotion_model_cpu.pkl

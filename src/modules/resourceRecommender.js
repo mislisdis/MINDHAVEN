@@ -1,21 +1,26 @@
-// Return resources based on emotion. Loads data/resources.json if present.
 const fs = require('fs');
 const path = require('path');
 
+const resourcePath = path.join(__dirname, '../../data/resources.json');
 let resources = {};
+
 try {
-  const p = path.join(__dirname, '../../data/resources.json');
-  if (fs.existsSync(p)) resources = JSON.parse(fs.readFileSync(p, 'utf8'));
-} catch (e) {
-  resources = {};
+  if (fs.existsSync(resourcePath)) {
+    resources = JSON.parse(fs.readFileSync(resourcePath, 'utf8'));
+  }
+} catch (err) {
+  console.error("Resource file error:", err.message);
 }
 
-function recommendForEmotion(emotion) {
-  const e = (emotion || 'neutral').toLowerCase();
-  // resources.json expected shape: { joy: [...], sadness: [...], neutral: [...] }
-  if (resources[e]) return resources[e];
-  // fallback - show neutral/general resources or empty array
-  return resources['neutral'] || [];
+function recommendForEmotion(emotion, severity='low') {
+  const e = emotion.toLowerCase();
+  
+  if (!resources[e]) return [];
+
+  if (severity === 'high' && resources[e].crisis) return resources[e].crisis;
+  if (severity === 'medium' && resources[e].medium) return resources[e].medium;
+
+  return resources[e].general || [];
 }
 
 module.exports = recommendForEmotion;

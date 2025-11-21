@@ -1,7 +1,198 @@
 {
-  "joy": ["That's wonderful! Tell me more!", "Love the energy — what's next?"],
-  "sadness": ["I'm sorry you're feeling low. Want to talk?", "I hear you — I'm here with you."],
-  "anger": ["I can sense frustration. Want to vent?", "Let's unpack what's upsetting you."],
-  "fear": ["You're not alone. Want to describe what's scaring you?", "We can take small steps together."],
-  "neutral": ["Got it. What's on your mind?", "I'm here — tell me more."]
+  "admiration": [
+    "That really sounds inspiring — what about it stood out to you?",
+    "Wow, that’s impressive. What part of it resonated the most?",
+    "It seems like you truly appreciate that — want to share more?",
+    "I can tell that meant a lot to you. What made it meaningful?",
+    "That’s awesome — I’m glad you got to experience something uplifting."
+  ],
+  "amusement": [
+    "Haha, that sounds amusing! What happened next?",
+    "Love that — it’s great when something makes us laugh.",
+    "Sounds funny! Want to tell me the whole story?",
+    "A good laugh can go a long way — what made it so amusing?",
+    "I can hear the humor in that — tell me more!"
+  ],
+  "anger": [
+    "I hear your frustration — want to talk through what upset you?",
+    "That sounds really upsetting. What made you feel this way?",
+    "Your feelings are valid. What triggered the anger?",
+    "I'm here — take your time. What part of this feels the hardest?",
+    "It makes sense you'd feel that way. Want to unpack it together?"
+  ],
+  "annoyance": [
+    "Ugh, that sounds annoying. What happened exactly?",
+    "I get why that would bother you. Want to vent a bit?",
+    "That kind of thing can really get under your skin — tell me more.",
+    "Sounds irritating — what part frustrated you the most?",
+    "Totally understand the annoyance. What led to it?"
+  ],
+  "approval": [
+    "Sounds like you really agree with that — what did you like about it?",
+    "I can sense your positive take on this. Want to explain more?",
+    "It’s great when something aligns with our values — what spoke to you?",
+    "Sounds like a solid yes from you. What part stood out?",
+    "Love that you approve — want to explore why?"
+  ],
+  "caring": [
+    "You sound very thoughtful — that’s a meaningful way to feel.",
+    "It’s kind of you to care so deeply. Want to tell me more?",
+    "Your empathy really shows — what’s on your heart?",
+    "It’s good you’re looking out for someone. How does it feel?",
+    "That’s such a compassionate reaction — what led you here?"
+  ],
+  "confusion": [
+    "It seems a bit unclear — want to break it down together?",
+    "I get that you’re confused. What part is the hardest to understand?",
+    "Let’s figure it out step by step — what’s tripping you up?",
+    "That sounds confusing. Want to explain what happened?",
+    "Totally understandable — where did things start to feel unclear?"
+  ],
+  "curiosity": [
+    "Love the curiosity — what made you wonder about this?",
+    "That’s an interesting thought. Want to explore it more?",
+    "Curiosity is a great sign — what sparked it?",
+    "I like the way you're thinking — tell me more about your question.",
+    "What part of this fascinates you the most?"
+  ],
+  "desire": [
+    "It sounds like you want something strongly — want to talk it through?",
+    "That desire sounds important. What’s pushing you toward it?",
+    "What would it mean for you if you got what you're hoping for?",
+    "It’s okay to want things — what does this mean to you?",
+    "Tell me more about what you're longing for."
+  ],
+  "disappointment": [
+    "That sounds really disappointing. Want to talk about what happened?",
+    "I’m sorry things didn’t go how you hoped — what part felt the worst?",
+    "It’s okay to feel let down. What were you expecting?",
+    "That must have stung. Want to walk through it together?",
+    "I get why you'd feel disappointed. Want to share more?"
+  ],
+  "disapproval": [
+    "Sounds like something didn’t sit right with you. What was it?",
+    "I hear your disagreement — what bothered you the most?",
+    "It’s okay not to approve. Want to tell me why?",
+    "You seem uneasy about that — what part did you dislike?",
+    "Let’s talk about it — what made it feel wrong?"
+  ],
+  "disgust": [
+    "That sounds really unpleasant — what happened?",
+    "I can hear the disgust in that. Want to explain more?",
+    "That reaction makes sense. What part felt disturbing?",
+    "Sounds like it really turned you off — what triggered it?",
+    "Totally get why you'd feel that way. Want to talk about it?"
+  ],
+  "embarrassment": [
+    "That must’ve felt awkward — want to share what happened?",
+    "I get that feeling — what made the moment embarrassing?",
+    "It’s okay, everyone feels embarrassed sometimes. What happened?",
+    "That sounds uncomfortable — want to talk through it?",
+    "I'm here for you — what part felt the most awkward?"
+  ],
+  "excitement": [
+    "That’s awesome — tell me more!",
+    "You sound excited! What’s the big news?",
+    "Love the energy — what’s happening?",
+    "This sounds amazing. Want to share the details?",
+    "That's great! What’s making you feel so pumped?"
+  ],
+  "fear": [
+    "That sounds scary. Want to talk about what’s worrying you?",
+    "I’m here with you — what are you afraid might happen?",
+    "It’s okay to feel scared. Want to walk through it?",
+    "That fear makes sense. Want to unpack it together?",
+    "I hear the worry in your words — tell me more."
+  ],
+  "gratitude": [
+    "That’s really thoughtful — what made you feel grateful?",
+    "It’s great that you’re appreciating something. Want to tell me?",
+    "Gratitude can be grounding — what brought that feeling?",
+    "Love that energy — what sparked your gratitude today?",
+    "That’s wonderful — what are you thankful for?"
+  ],
+  "grief": [
+    "That sounds incredibly heavy. I’m here with you.",
+    "I’m very sorry you’re going through this. Want to talk about it?",
+    "Grief can be overwhelming — take your time. What’s on your heart?",
+    "It’s okay to feel this pain. I'm here to listen.",
+    "Losing something meaningful hurts. What happened?"
+  ],
+  "joy": [
+    "That’s great — what made you feel happy?",
+    "Love hearing that! Want to share more?",
+    "That's a nice moment — what sparked the joy?",
+    "Amazing! What’s bringing you happiness today?",
+    "That’s wonderful — tell me more about that feeling."
+  ],
+  "love": [
+    "That’s a strong feeling — want to talk about it?",
+    "It sounds like you care deeply. What’s bringing that up?",
+    "Love can be powerful — how does it feel for you?",
+    "That warmth really comes through — want to share more?",
+    "Beautiful emotion — what’s inspiring it?"
+  ],
+  "nervousness": [
+    "It’s okay to feel nervous. What’s on your mind?",
+    "I hear your tension — want to talk through it?",
+    "Let’s slow things down. What’s making you uneasy?",
+    "Nerves happen to everyone — what triggered it?",
+    "You’re safe here. Want to explain what’s stressing you?"
+  ],
+  "optimism": [
+    "Love the positive outlook — what’s giving you hope?",
+    "You sound optimistic — tell me more!",
+    "That’s a great mindset. What’s making you feel good?",
+    "I like your confidence — what’s encouraging you?",
+    "Sounds promising — what are you looking forward to?"
+  ],
+  "pride": [
+    "You sound proud — and you should be! What happened?",
+    "That’s awesome — want to celebrate the moment?",
+    "Love that confidence — what did you accomplish?",
+    "That’s something to feel good about. Tell me more!",
+    "Nice! What made you feel proud?"
+  ],
+  "realization": [
+    "That sounds like a meaningful realization — what led to it?",
+    "Interesting — what made things click for you?",
+    "It seems like something became clear. Want to talk about it?",
+    "Breakthroughs can be powerful — what happened?",
+    "That’s insightful — tell me more about the realization."
+  ],
+  "relief": [
+    "I’m glad something eased your stress — what changed?",
+    "That’s comforting to hear — what brought relief?",
+    "You must feel lighter — want to share what helped?",
+    "Relief can be such a release — what happened?",
+    "That's good — what made things feel better?"
+  ],
+  "remorse": [
+    "It sounds like you feel regret — want to talk through it?",
+    "I hear the remorse in your words — what happened?",
+    "It’s okay to feel this way. Want to share more?",
+    "Sounds like something is weighing on you — what’s going on?",
+    "You’re reflecting deeply — what led to this feeling?"
+  ],
+  "sadness": [
+    "I’m really sorry you’re feeling this way. Want to talk about it?",
+    "That sounds really heavy — I’m here for you.",
+    "Your feelings are valid. What’s hurting you?",
+    "It sounds painful — want to share what’s going on?",
+    "I'm here — take your time. What's making you feel sad?"
+  ],
+  "surprise": [
+    "Wow — that sounds surprising! What happened?",
+    "That must’ve caught you off guard — want to talk about it?",
+    "Unexpected things can feel intense — what surprised you?",
+    "That’s interesting — tell me more about the moment.",
+    "Sounds like something unexpected happened. What was it?"
+  ],
+  "neutral": [
+    "I’m here — what’s on your mind?",
+    "Got it. Want to tell me more?",
+    "Okay — how are you feeling about it?",
+    "I’m listening. Go ahead.",
+    "Tell me what you’re thinking."
+  ]
 }
