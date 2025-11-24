@@ -1,0 +1,182 @@
+/* ------------------------------
+   DARK THEME – MindHaven Chat
+------------------------------- */
+
+/* Global Background + Text */
+body,
+.chat-container {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+
+/* ------------------------------
+   SIDEBAR
+------------------------------- */
+
+.chat-sidebar {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  /* allow inner items to flow; we'll let #chatList grow and .sidebar-footer use margin-top:auto */
+  padding-bottom: 20px;
+}
+
+.chat-sidebar h3 {
+  color: #f5f5f5;
+}
+
+#newChatBtn,
+.sidebar-footer a {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  text-align: center;
+  display: block;
+}
+
+#newChatBtn:hover,
+.sidebar-footer a:hover {
+  background-color: var(--secondary);
+  color: #fff;
+}
+
+/* Logout button at bottom */
+.sidebar-footer {
+  width: 100%;
+  padding: 0 10px;
+  /* ensure footer sits at bottom of the sidebar */
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Make the chat list grow to push footer down */
+#chatList {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+
+/* ------------------------------
+   CHAT MAIN AREA
+------------------------------- */
+
+.chat-main {
+  background-color: #181818;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ------------------------------
+   CHAT HEADER
+------------------------------- */
+
+.chat-header {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+}
+
+/* MindHaven Logo */
+.mindhaven-logo {
+  font-family: 'Satisfy', cursive;
+  color: var(--secondary);
+  font-size: 1.6rem;
+}
+
+
+/* ------------------------------
+   MESSAGES AREA
+------------------------------- */
+
+.chat-messages {
+  background-color: #181818;
+  color: #e0e0e0;
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  height: calc(100vh - 220px);
+}
+
+.chat-messages p.text-muted {
+  color: #aaa;
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background-color: #181818;
+}
+
+
+/* ------------------------------
+   BOT RECOMMENDATIONS
+------------------------------- */
+
+.bot-recommendation {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  padding: 15px 20px;
+  border-top: 1px solid #333;
+}
+
+
+/* ------------------------------
+   USER INPUT BOX
+------------------------------- */
+
+#chatForm {
+  display: flex;
+  padding: 15px 20px;
+  background-color: #1f1f1f;
+  border-top: 1px solid #333;
+  gap: 10px;
+}
+
+/* Corrected + Clean */
+#userInput {
+  flex: 1;
+  height: 38px;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #121212;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+
+#chatForm button {
+  padding: 0 20px;
+  height: 38px;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+#chatForm button:hover {
+  opacity: 0.9;
+}

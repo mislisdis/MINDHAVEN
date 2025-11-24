@@ -123,13 +123,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Theme toggle ---
-  const themeBtn = document.getElementById('themeToggle');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-theme');
+  // --- Theme toggle (initialize + persist) ---
+  (function initThemeToggle() {
+    const themeBtn = document.getElementById('themeToggle');
+    if (!themeBtn) return;
+
+    const saved = localStorage.getItem('theme');
+    const isDark = saved === 'dark';
+    const darkStylesheet = document.getElementById('darkThemeStylesheet');
+    document.body.classList.toggle('dark-theme', isDark);
+    if (darkStylesheet) darkStylesheet.disabled = !isDark;
+    themeBtn.checked = isDark;
+
+    themeBtn.addEventListener('change', () => {
+      const nowDark = themeBtn.checked;
+      document.body.classList.toggle('dark-theme', nowDark);
+      if (darkStylesheet) darkStylesheet.disabled = !nowDark;
+      try { localStorage.setItem('theme', nowDark ? 'dark' : 'light'); } catch (e) {}
     });
-  }
+  })();
 
   // --- Initial load: fetch existing chats ---
   async function initSidebar() {

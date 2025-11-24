@@ -1,7 +1,14 @@
+<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 {{> header user=user}}
 
 <main class="auth-page">
+  <h2 class="mindhaven-logo">MindHaven</h2>
   <h2>Login</h2>
+
+  <!-- Quick logout (useful if a token exists and you need to clear it) -->
+  <form method="POST" action="/api/auth/logout" style="position: absolute; right: 20px; top: 20px;">
+    <button type="submit" class="logout-btn" style="padding:6px 10px; font-size:0.85rem;">Logout</button>
+  </form>
 
   {{#if error}}
     <div class="alert alert-error">{{error}}</div>

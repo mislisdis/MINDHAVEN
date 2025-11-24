@@ -43,3 +43,13 @@ exports.login = async (req, res, next) => {
     return res.render('login', { error: 'Unexpected error occurred' });
   }
 };
+
+exports.logout = (req, res) => {
+  try {
+    res.clearCookie('token');
+    return res.redirect('/login');
+  } catch (err) {
+    console.error('Logout error:', err.message);
+    return res.redirect('/login');
+  }
+};

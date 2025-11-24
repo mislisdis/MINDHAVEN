@@ -151,10 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
     return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
   }
 
-  // --- Theme toggle ---
-  document.getElementById('themeToggle')?.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-  });
+  // --- Theme toggle (initialize + persist) ---
+  (function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    // Apply saved theme (if any)
+    const saved = localStorage.getItem('theme');
+    const isDark = saved === 'dark';
+    const darkStylesheet = document.getElementById('darkThemeStylesheet');
+    document.body.classList.toggle('dark-theme', isDark);
+    if (darkStylesheet) darkStylesheet.disabled = !isDark;
+    themeToggle.checked = isDark;
+
+    // Listen for changes and persist
+    themeToggle.addEventListener('change', () => {
+      const nowDark = themeToggle.checked;
+      document.body.classList.toggle('dark-theme', nowDark);
+      if (darkStylesheet) darkStylesheet.disabled = !nowDark;
+      try { localStorage.setItem('theme', nowDark ? 'dark' : 'light'); } catch (e) { /* ignore storage errors */ }
+    });
+  })();
 
   // Load chats on page load
   loadChats();

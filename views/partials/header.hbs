@@ -1,7 +1,14 @@
 <header class="site-header">
   <div class="logo">
-    <a href="/">🧠 MindHaven</a>
+    <a href="/" 
+       style="font-family: 'Satisfy', cursive; 
+              font-size: 1.8rem; 
+              font-weight: bold; 
+              color: {{#if landing}}var(--secondary){{else}}white{{/if}};">
+      🧠 MindHaven
+    </a>
   </div>
+
   <nav class="nav-links">
     {{#if user}}
       <span>Welcome, {{user.name}}</span>

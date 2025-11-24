@@ -1,18 +1,35 @@
+<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
 <div class="chat-container">
 
   <!-- Sidebar -->
   <aside class="chat-sidebar" id="chatSidebar">
     <h3>Your Chats</h3>
-    <div id="chatList"></div>
     <button id="newChatBtn">+ New Chat</button>
+    <div id="chatList"></div>
+
+    <!-- Logout Button at bottom -->
+    <div class="sidebar-footer">
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
   </aside>
 
   <!-- Chat Window -->
   <section class="chat-main">
     <!-- Header -->
     <header class="chat-header">
-      <h2>MindHaven Chatbot</h2>
-      <button id="themeToggle">Toggle Theme</button>
+      <h2 class="mindhaven-logo" style="font-family: 'Satisfy', cursive;">MindHaven</h2>
+
+      <!-- Theme Toggle Switch -->
+      <label class="theme-switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider round"></span>
+      </label>
     </header>
 
     <!-- Messages -->
@@ -36,5 +53,5 @@
   window.USER_ID = '{{user._id}}';
 </script>
 
-<!-- Include the chat JS -->
+<!-- Include the chat JS (handles theme toggle initialization + persistence) -->
 <script src="/js/chat.js" defer></script>

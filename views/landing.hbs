@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MindHaven | A Safe Space for Your Thoughts</title>
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+
   <!-- Bootstrap + Animate + AOS + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
@@ -18,24 +21,33 @@
 <body class="landing-body">
 
 <!-- 🌙 Hero Section -->
-<section class="hero d-flex align-items-center justify-content-center">
-  <div class="row align-items-center gx-0 w-100" style="min-height: 100vh;">
-    
+<section class="hero d-flex align-items-center justify-content-center" style="background-color: var(--primary); min-height: 100vh;">
+  <div class="row align-items-center gx-0 w-100">
+
     <!-- Left Text Section -->
-    <div class="col-lg-6 text-light text-center text-lg-start ps-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
-      <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">
-        Welcome to <span style="color: var(--highlight)">MindHaven</span>
+    <div class="col-lg-6 text-center text-lg-start ps-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+      
+      <!-- Title -->
+      <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown" style="color: black;">
+        Welcome to 
+        <span class="mindhaven-logo">MindHaven</span>
       </h1>
-      <p class="lead mb-4 animate__animated animate__fadeInUp">
+
+      <!-- Subtitle -->
+      <p class="lead mb-4 animate__animated animate__fadeInUp" style="color: black;">
         Your personal mental wellness companion — here to listen, reflect, and support you through conversations that matter.
       </p>
+
+      <!-- Buttons -->
       <a href="/login" class="btn btn-light btn-lg me-3 px-4 py-2 fw-semibold">Get Started</a>
-      <a href="#about" class="btn btn-outline-light btn-lg px-4 py-2 fw-semibold">Learn More</a>
+      <a href="#about" class="btn px-4 py-2 btn-lg fw-semibold" style="background-color: black; color: white; border: 2px solid black;">
+        Learn More
+      </a>
     </div>
 
     <!-- Right Animated Image -->
     <div class="col-lg-6 text-center pe-lg-5" data-aos="fade-left">
-      <img src="/images/mindhaven-hero.png" class="img-fluid animate__animated animate__zoomIn" alt="MindHaven illustration">
+      <img src="/images/mindhaven-hero.jpg" class="img-fluid animate__animated animate__zoomIn" alt="MindHaven illustration">
     </div>
   </div>
 </section>
