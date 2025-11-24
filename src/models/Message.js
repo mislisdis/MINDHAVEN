@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true }, // new: group messages by chat
   sender: { type: String, enum: ['user', 'bot'], required: true },
   text: { type: String, required: true },
   emotion: { type: String, default: 'neutral' },

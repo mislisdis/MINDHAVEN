@@ -1,3 +1,4 @@
+// src/modules/emotionAnalyzer.js
 const axios = require('axios');
 
 async function analyzeEmotion(text) {
@@ -8,14 +9,14 @@ async function analyzeEmotion(text) {
       headers: { "Content-Type": "application/json" }
     });
 
-    const emotion = res.data?.emotion?.toLowerCase() || "neutral";
+    const emotion = (res.data?.emotion || 'neutral').toLowerCase();
+    const confidence = typeof res.data?.confidence === 'number' ? res.data.confidence : 0.6;
 
-    console.log(`🧠 Emotion detected from model: ${emotion}`);
-    return emotion;
-
+    console.log(`🧠 Emotion detected: ${emotion} (confidence: ${confidence})`);
+    return { emotion, confidence };
   } catch (err) {
     console.error("❌ EmotionAnalyzer error:", err.message);
-    return "neutral";
+    return { emotion: "neutral", confidence: 0.5 };
   }
 }
 

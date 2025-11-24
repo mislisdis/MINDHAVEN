@@ -1,39 +1,40 @@
-<div class="chatbot-wrapper">
+<div class="chat-container">
+
+  <!-- Sidebar -->
+  <aside class="chat-sidebar" id="chatSidebar">
+    <h3>Your Chats</h3>
+    <div id="chatList"></div>
+    <button id="newChatBtn">+ New Chat</button>
+  </aside>
+
+  <!-- Chat Window -->
+  <section class="chat-main">
     <!-- Header -->
     <header class="chat-header">
-        <h2>MindHaven Chatbot</h2>
-        <button id="themeToggle">Toggle Theme</button>
+      <h2>MindHaven Chatbot</h2>
+      <button id="themeToggle">Toggle Theme</button>
     </header>
 
-    <!-- Chat Messages -->
+    <!-- Messages -->
     <div class="chat-messages" id="chatMessages">
-        {{#each messages}}
-            <div class="message {{this.sender}}">
-                <p>{{this.text}}</p>
-            </div>
-        {{/each}}
-    </div>
-
-    <!-- Typing Indicator -->
-    <div class="typing-indicator" id="typingIndicator" style="display:none;">
-        MindHaven is typing...
+      <p class="text-muted">What's on your mind today?</p>
     </div>
 
     <!-- Bot Recommendation -->
-    <div class="bot-recommendation" id="recommendation">
-        {{#if recommendation}}
-            <p>{{recommendation}}</p>
-        {{/if}}
-    </div>
+    <div class="bot-recommendation" id="recommendation"></div>
 
-    <!-- User Input Form -->
+    <!-- User Input -->
     <form id="chatForm">
-        <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
-        <button type="submit">Send</button>
+      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
+      <button type="submit">Send</button>
     </form>
+  </section>
 </div>
 
 <!-- Pass logged-in user ID to frontend -->
 <script>
-    window.USER_ID = '{{user._id}}';
+  window.USER_ID = '{{user._id}}';
 </script>
+
+<!-- Include the chat JS -->
+<script src="/js/chat.js" defer></script>

@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const exphbs = require('express-handlebars');
 const hbs = require('hbs');
 const { requireAuth } = require('./src/middlewares/authMiddleware');
+const chatRoutes = require('./src/routes/chatRoutes');
 
 // Initialize app
 const app = express();
@@ -49,7 +50,7 @@ app.use('/api/chatbot', require('./src/routes/chatbotRoutes'));
 app.use('/api/user', require('./src/routes/userRoutes'));
 app.use('/api/feedback', require('./src/routes/feedbackRoutes'));
 app.use('/api/auth', require('./src/routes/authRoutes'));
-
+app.use('/api/chats', requireAuth, chatRoutes);
 
 // UI ROUTES (public pages)
 app.get('/', (req, res) => {
