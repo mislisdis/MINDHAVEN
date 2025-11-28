@@ -1,0 +1,2477 @@
+admin.hbs code:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindHaven Admin Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
+  <style>
+    .admin-container {
+      min-height: 100vh;
+      background: var(--gray-50);
+      padding: 2rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .admin-header h1 {
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    .admin-logout {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .admin-logout:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .section-title {
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 3px solid var(--secondary);
+      display: inline-block;
+    }
+
+    .feedback-container {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .feedback-item {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      transition: all 0.2s;
+    }
+
+    .feedback-item:hover {
+      background-color: var(--gray-50);
+    }
+
+    .feedback-item:last-child {
+      border-bottom: none;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.75rem;
+    }
+
+    .feedback-user {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 1rem;
+    }
+
+    .feedback-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .feedback-rating {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .star {
+      color: var(--secondary);
+      font-size: 1.1rem;
+      text-shadow: 0 0 5px rgba(251, 133, 0, 0.2);
+    }
+
+    .no-rating {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    .feedback-message {
+      color: var(--gray-800);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .no-feedback {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      color: var(--text-dark);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--secondary);
+    }
+
+    /* Dark theme support */
+    .dark-theme .admin-container {
+      background: #121212;
+    }
+
+    .dark-theme .admin-header h1 {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .stat-card {
+      background: #1e1e1e;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .section-title {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .feedback-container {
+      background: #1e1e1e;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .feedback-item {
+      border-bottom-color: #333;
+    }
+
+    .dark-theme .feedback-item:hover {
+      background-color: #2a2a2a;
+    }
+
+    .dark-theme .feedback-user {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .feedback-message {
+      color: #b0b0b0;
+    }
+
+    .dark-theme .filter-btn {
+      background: #2a2a2a;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .filter-btn.active {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .pagination-btn {
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      color: var(--text-dark);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pagination-btn:hover {
+      background: var(--gray-100);
+      border-color: var(--secondary);
+    }
+
+    .pagination-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    .dark-theme .pagination-btn {
+      background: #2a2a2a;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .pagination-btn:hover {
+      background: #333;
+      border-color: var(--secondary);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <h1><span class="mindhaven-logo">MindHaven</span> Admin</h1>
+    <form method="POST" action="/api/auth/admin/logout" style="display: inline;">
+      <button type="submit" class="admin-logout">Logout</button>
+    </form>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <!-- Total Users -->
+    <div class="stat-card">
+      <i class="bi bi-people-fill stat-icon"></i>
+      <div class="stat-number">{{totalUsers}}</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+
+    <!-- Total Feedback -->
+    <div class="stat-card">
+      <i class="bi bi-chat-dots-fill stat-icon"></i>
+      <div class="stat-number">{{totalFeedback}}</div>
+      <div class="stat-label">Total Feedback Submissions</div>
+    </div>
+
+    <!-- Average Rating -->
+    <div class="stat-card">
+      <i class="bi bi-star-fill stat-icon"></i>
+      <div class="stat-number">{{averageRating}}</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+
+  <!-- Feedback Section -->
+  <div style="margin-top: 3rem;">
+    <h2 class="section-title">Recent Feedback</h2>
+
+    {{#if feedbackList}}
+      <div class="feedback-container">
+        {{#each feedbackList}}
+          <div class="feedback-item">
+            <div class="feedback-header">
+              <div>
+                <div class="feedback-user">Anonymous Feedback</div>
+                <div class="feedback-date">{{formatDate this.createdAt}}</div>
+              </div>
+              {{#if this.rating}}
+                <div class="feedback-rating">
+                  {{#loop this.rating}}
+                    <span class="star">★</span>
+                  {{/loop}}
+                </div>
+              {{else}}
+                <div class="no-rating">No rating</div>
+              {{/if}}
+            </div>
+            <div class="feedback-message">{{this.message}}</div>
+          </div>
+        {{/each}}
+      </div>
+
+      {{#if showPagination}}
+        <div class="pagination">
+          {{#if hasPrevPage}}
+            <a href="?page={{prevPage}}" class="pagination-btn">← Previous</a>
+          {{/if}}
+          
+          <span style="display: flex; align-items: center; padding: 0.5rem 0.75rem; color: var(--text-muted);">
+            Page {{currentPage}} of {{totalPages}}
+          </span>
+
+          {{#if hasNextPage}}
+            <a href="?page={{nextPage}}" class="pagination-btn">Next →</a>
+          {{/if}}
+        </div>
+      {{/if}}
+    {{else}}
+      <div class="feedback-container">
+        <div class="no-feedback">
+          <i class="bi bi-inbox" style="font-size: 3rem; color: var(--gray-300); display: block; margin-bottom: 1rem;"></i>
+          <p>No feedback submissions yet.</p>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<!-- Theme Toggle -->
+<script>
+  // Check for saved dark theme preference
+  const darkThemeEnabled = localStorage.getItem('darkTheme') === 'true';
+  const html = document.documentElement;
+  const darkStylesheet = document.getElementById('darkThemeStylesheet');
+
+  if (darkThemeEnabled) {
+    html.classList.add('dark-theme');
+    darkStylesheet.disabled = false;
+  }
+
+  // Optional: Add a theme toggle button if needed
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'D' && e.ctrlKey) {
+      e.preventDefault();
+      darkThemeEnabled ? 
+        (html.classList.remove('dark-theme'), darkStylesheet.disabled = true, localStorage.setItem('darkTheme', 'false')) :
+        (html.classList.add('dark-theme'), darkStylesheet.disabled = false, localStorage.setItem('darkTheme', 'true'));
+    }
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+admin-login.hbs :
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindHaven Admin Login</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&family=Satisfy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
+  <style>
+    .admin-login-page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 2rem;
+    }
+
+    .admin-login-card {
+      background: var(--white);
+      padding: 3rem 2.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 420px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .admin-login-card h1 {
+      text-align: center;
+      color: var(--gray-900);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .admin-login-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--secondary);
+      outline: none;
+      background: var(--white);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .alert-error {
+      background: #ffdddd;
+      border-left: 5px solid #ff4d4d;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      color: #a30000;
+      font-weight: 600;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .back-link a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dark theme */
+    .dark-theme .admin-login-card {
+      background: #1e1e1e;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .admin-login-card h1 {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .form-group label {
+      color: #b0b0b0;
+    }
+
+    .dark-theme .form-control {
+      background: #121212;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .form-control:focus {
+      border-color: var(--secondary);
+      background: #181818;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-container .mindhaven-logo {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+
+<body class="admin-login-page">
+
+<div class="admin-login-card">
+  <!-- Logo -->
+  <div class="logo-container">
+    <h1><span class="mindhaven-logo">MindHaven</span></h1>
+    <p class="admin-login-subtitle">Admin Panel</p>
+  </div>
+
+  <!-- Error Alert -->
+  {{#if error}}
+    <div class="alert-error">
+      {{ error }}
+    </div>
+  {{/if}}
+
+  <!-- Login Form -->
+  <form method="POST" action="/api/auth/admin/login">
+    <div class="form-group">
+      <label for="email">Admin Email</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="admin@mindhaven.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+    </div>
+
+    <button type="submit" class="submit-btn">Login to Admin Dashboard</button>
+  </form>
+
+  <div class="back-link">
+    <a href="/">← Back to Home</a>
+  </div>
+</div>
+
+<!-- Theme Toggle -->
+<script>
+  // Check for saved dark theme preference
+  const darkThemeEnabled = localStorage.getItem('darkTheme') === 'true';
+  const html = document.documentElement;
+  const darkStylesheet = document.getElementById('darkThemeStylesheet');
+
+  if (darkThemeEnabled) {
+    html.classList.add('dark-theme');
+    darkStylesheet.disabled = false;
+  }
+</script>
+
+</body>
+</html>
+
+
+
+adminRoutes.js:
+
+const express = require('express');
+const router = express.Router();
+const { getAdminDashboard } = require('../controllers/adminController');
+const { requireAdmin } = require('../middlewares/authMiddleware');
+
+// Admin login page
+router.get('/login', (req, res) => {
+  res.render('admin-login');
+});
+
+// Admin dashboard (protected)
+router.get('/', requireAdmin, getAdminDashboard);
+
+module.exports = router;
+
+
+
+admincontroller.js:
+
+const User = require('../models/User');
+const Feedback = require('../models/Feedback');
+
+/**
+ * Get admin dashboard with user count, feedback statistics
+ */
+const getAdminDashboard = async (req, res) => {
+  try {
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    // Get total user count
+    const totalUsers = await User.countDocuments();
+
+    // Get all feedback with pagination
+    const feedbackList = await Feedback.find()
+      .populate('userId', 'name email')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Get total feedback count
+    const totalFeedback = await Feedback.countDocuments();
+
+    // Calculate average rating
+    const ratings = await Feedback.aggregate([
+      { $match: { rating: { $exists: true, $ne: null } } },
+      { $group: { _id: null, avgRating: { $avg: '$rating' } } }
+    ]);
+    const averageRating = ratings.length > 0 ? ratings[0].avgRating.toFixed(1) : 'N/A';
+
+    // Pagination info
+    const totalPages = Math.ceil(totalFeedback / limit);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
+    res.render('admin', {
+      totalUsers,
+      totalFeedback,
+      averageRating,
+      feedbackList,
+      currentPage: parseInt(page),
+      totalPages,
+      hasNextPage,
+      hasPrevPage,
+      prevPage: parseInt(page) - 1,
+      nextPage: parseInt(page) + 1,
+      showPagination: totalPages > 1
+    });
+  } catch (err) {
+    console.error('Admin dashboard error:', err.message);
+    res.status(500).render('admin', { 
+      error: 'Failed to load admin dashboard',
+      totalUsers: 0,
+      totalFeedback: 0,
+      averageRating: 'N/A',
+      feedbackList: []
+    });
+  }
+};
+
+module.exports = {
+  getAdminDashboard
+};
+
+
+
+feedback.hbs:
+
+{{> header user=user}}
+
+<main class="feedback-page">
+  <div class="feedback-container">
+    <h2>Send Feedback</h2>
+
+    {{#if error}}
+      <div class="alert alert-error">{{error}}</div>
+    {{/if}}
+
+    {{#if success}}
+      <div class="alert alert-success">{{success}}</div>
+    {{/if}}
+
+    <form method="POST" action="/api/feedback" class="feedback-form">
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" required>{{message}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Rating (optional)</label>
+        <div class="star-rating">
+          <input type="radio" id="star5" name="rating" value="5">
+          <label for="star5" class="star-label" title="5 stars">★</label>
+          
+          <input type="radio" id="star4" name="rating" value="4">
+          <label for="star4" class="star-label" title="4 stars">★</label>
+          
+          <input type="radio" id="star3" name="rating" value="3">
+          <label for="star3" class="star-label" title="3 stars">★</label>
+          
+          <input type="radio" id="star2" name="rating" value="2">
+          <label for="star2" class="star-label" title="2 stars">★</label>
+          
+          <input type="radio" id="star1" name="rating" value="1">
+          <label for="star1" class="star-label" title="1 star">★</label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Feedback</button>
+    </form>
+  </div>
+</main>
+
+{{> footer}}
+
+
+feedbackController.js:
+
+// src/controllers/feedbackController.js
+const collectFeedback = require('../modules/feedbackCollector');
+const ChatHistory = require('../models/ChatHistory');
+
+exports.submitFeedback = async (req, res, next) => {
+  try {
+    const { message, rating, chatId } = req.body;
+
+    // Validate message
+    if (!message) {
+      return res.render('feedback', { error: 'Feedback message required' });
+    }
+
+    // Save feedback
+    const fb = await collectFeedback({
+      userId: req.user?._id,
+      message,
+      rating
+    });
+
+    // Optional: link feedback to a chat
+    if (chatId) {
+      await ChatHistory.findByIdAndUpdate(chatId, { $set: { 'meta.feedbackId': fb._id } });
+    }
+
+    // ✅ Redirect user back to the chat page
+    res.redirect('/chat');
+
+  } catch (err) {
+    console.error('FeedbackController error:', err);
+    res.render('feedback', { error: 'Something went wrong. Please try again.' });
+  }
+};
+
+
+authmiddleware.js:
+const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // Make sure you have a User model
+
+exports.requireAuth = async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    console.log('No token found');
+    return res.status(401).json({ error: 'Unauthorized — no token' });
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Fetch user from DB
+    const user = await User.findById(payload.id);
+    if (!user) return res.status(401).json({ error: 'Unauthorized — user not found' });
+
+    req.user = user; // <-- now req.user._id will work
+    next();
+  } catch (err) {
+    console.error('JWT verification error:', err.message);
+    return res.status(401).json({ error: 'Unauthorized — token invalid' });
+  }
+};
+
+exports.requireAdmin = async (req, res, next) => {
+  const token = req.cookies.adminToken;
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Fetch user from DB
+    const user = await User.findById(payload.id);
+    if (!user || !user.isAdmin) {
+      return res.status(403).redirect('/admin/login');
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    console.error('Admin JWT verification error:', err.message);
+    res.clearCookie('adminToken');
+    return res.redirect('/admin/login');
+  }
+};
+
+authroutes:
+
+const express = require('express');
+const router = express.Router();
+
+const { login, logout, adminLogin, adminLogout } = require('../controllers/authController');
+
+router.post('/login', login);
+router.post('/logout', logout);
+router.post('/admin/login', adminLogin);
+router.post('/admin/logout', adminLogout);
+
+module.exports = router;
+
+
+server.js:
+
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const connectDB = require('./config/db');
+const exphbs = require('express-handlebars');
+const hbs = require('hbs');
+const { requireAuth } = require('./src/middlewares/authMiddleware');
+const chatRoutes = require('./src/routes/chatRoutes');
+
+// Initialize app
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+
+// 1️⃣ Connect to MongoDB
+connectDB();
+
+// 2️⃣ Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 3️⃣ View engine (Handlebars)
+const hbsEngine = exphbs.engine({
+  extname: '.hbs',
+  defaultLayout: 'main',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
+  },
+  helpers: {
+    getEmoji: (emotion) => {
+      const map = {
+        joy: '😄',
+        sadness: '😢',
+        anger: '😡',
+        fear: '😨',
+        neutral: '😐'
+      };
+      return map[emotion] || '🤖';
+    },
+    formatDate: (date) => {
+      if (!date) return '';
+      return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    },
+    loop: function(n, block) {
+      let accum = '';
+      for(let i = 0; i < n; ++i)
+        accum += block.fn(i);
+      return accum;
+    }
+  }
+});
+
+app.engine('hbs', hbsEngine);
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Register partials (reusable UI components)
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
+
+// Also register with hbs for backward compatibility
+hbs.registerHelper('getEmoji', (emotion) => {
+  const map = {
+    joy: '😄',
+    sadness: '😢',
+    anger: '😡',
+    fear: '😨',
+    neutral: '😐'
+  };
+  return map[emotion] || '🤖';
+});
+
+hbs.registerHelper('formatDate', (date) => {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+});
+
+hbs.registerHelper('loop', function(n, block) {
+  let accum = '';
+  for(let i = 0; i < n; ++i)
+    accum += block.fn(i);
+  return accum;
+});
+
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+// 4️⃣ Routes
+// API routes
+app.use('/api/chatbot', require('./src/routes/chatbotRoutes'));
+app.use('/api/user', require('./src/routes/userRoutes'));
+app.use('/api/feedback', require('./src/routes/feedbackRoutes'));
+app.use('/api/auth', require('./src/routes/authRoutes'));
+app.use('/api/chats', requireAuth, chatRoutes);
+
+// Admin dashboard
+app.use('/admin', require('./src/routes/adminRoutes'));
+
+// UI ROUTES (public pages)
+app.get('/', (req, res) => {
+  res.render('landing');  // landing.hbs
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+app.get('/feedback', (req, res) => {
+  res.render('feedback');
+});
+
+// 5️⃣ Error handling middleware
+const { errorHandler } = require('./src/middlewares/errorHandler');
+app.use(errorHandler);
+
+// Chat page route (pre-render messages)
+const { getChatHistory } = require('./src/controllers/chatbotController');
+app.get('/chat', requireAuth, getChatHistory);
+
+
+
+// 6️⃣ Start server
+app.listen(PORT, () => {
+  console.log(`🚀 MindHaven running at http://localhost:${PORT}`);
+});
+
+
+styles.css:
+
+/* ---------------------------------------------------
+   Consolidated CSS - cleaned duplicates & fixes
+--------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&family=Satisfy&display=swap');
+
+/* Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------------------------------------------------
+   Theme variables (light) and missing defs
+--------------------------------------------------- */
+:root {
+  --primary: #FFB703;
+  --secondary: #FB8500;
+
+  --white: #FFFFFF;
+  --black: #000000;
+
+  --gray-50: #F8F9FA;
+  --gray-100: #E9ECEF;
+  --gray-200: #DEE2E6;
+  --gray-300: #CED4DA; /* added */
+  --gray-500: #6C757D;
+  --gray-800: #343A40;
+  --gray-900: #1A1A1A;
+
+  --text-dark: var(--gray-900);
+  --text-light: var(--white);
+  --text-muted: var(--gray-500); /* added */
+
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 25px;
+
+  --secondary-light: #FFB703; /* added */
+  --transition-normal: 0.2s ease; /* added */
+}
+
+/* Dark theme overrides: add the `dark-theme` class to the <body> */
+.dark-theme {
+  --white: #181818; /* page background for the dark class */
+  --black: #ffffff; /* inverted semantic black */
+  --gray-50: #222;
+  --gray-100: #2a2a2a;
+  --gray-200: #333;
+  --gray-300: #3b3b3b;
+  --gray-500: #aaa;
+  --gray-800: #ddd;
+  --gray-900: #fff;
+
+  --text-dark: #fff;
+  --text-light: #000;
+}
+
+/* ---------------------------------------------------
+   Global styles
+--------------------------------------------------- */
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--white);
+  color: var(--text-dark);
+  transition: var(--transition-normal);
+  animation: fadeInPage 0.6s ease-in-out;
+}
+
+@keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---------------------------------------------------
+   Navbar
+--------------------------------------------------- */
+.site-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 2rem; background: var(--secondary); color: white; box-shadow: var(--shadow-md);
+}
+.site-header .logo a { color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; }
+.nav-links a { color: white; text-decoration: none; margin-left: 1rem; padding: 0.5rem 1rem; border-radius: var(--radius-md); transition: 0.3s; }
+.nav-links a:hover { background: rgba(255,255,255,0.15); }
+
+/* Buttons */
+.btn-black { background: var(--black); color: var(--white); padding: 0.7rem 1.5rem; border-radius: var(--radius-full); font-weight: 600; text-decoration: none; transition: 0.3s; }
+.btn-black:hover { opacity: 0.8; }
+
+/* ---------------------------------------------------
+   Auth (Login / Register)
+--------------------------------------------------- */
+.auth-container { min-height: 100vh; display:flex; justify-content:center; align-items:center; background: linear-gradient(135deg, var(--primary), var(--secondary)); padding:2rem; }
+.auth-card { background: var(--white); padding:3rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width:100%; max-width:450px; }
+.auth-card h2 { text-align:center; color:var(--gray-900); font-family:'Poppins',sans-serif; margin-bottom:1rem; }
+.form-group label { font-weight:600; margin-bottom:0.5rem; display:block; }
+.form-control { width:100%; padding:0.8rem; border-radius:var(--radius-md); border:2px solid var(--gray-200); }
+.form-control:focus { border-color:var(--secondary); outline:none; }
+.auth-card .btn { width:100%; margin-top:1rem; background:var(--secondary); color:white; border-radius:var(--radius-full); padding:0.8rem; font-weight:600; border:none; }
+
+/* ---------------------------------------------------
+   Chat layout
+--------------------------------------------------- */
+.chat-container { display:flex; height:100vh; }
+.chat-sidebar { width:280px; background:var(--gray-50); border-right:3px solid var(--secondary); padding:1.5rem; display:flex; flex-direction:column; height:100vh; position:relative; }
+.chat-main { flex:1; display:flex; flex-direction:column; }
+.chat-header { background:var(--secondary); color:white; padding:1.2rem 2rem; display:flex; justify-content:space-between; }
+.chat-messages { flex:1; padding:2rem; background:var(--gray-50); overflow-y:auto; }
+
+/* Message bubbles */
+.bot-msg, .user-msg { max-width:70%; padding:1rem 1.25rem; border-radius:var(--radius-lg); position:relative; animation:fadeInUp 0.4s ease forwards; line-height:1.5; box-shadow:var(--shadow-sm); }
+.user-msg { align-self:flex-end; background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color:var(--white); border-bottom-right-radius:var(--radius-sm); }
+.bot-msg { align-self:flex-start; background-color:var(--white); color:var(--gray-800); border:1px solid var(--gray-200); border-bottom-left-radius:var(--radius-sm); }
+.bot-msg.typing { font-style:italic; color:var(--text-muted); background-color:var(--gray-100); }
+
+@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%{opacity:0.6} 50%{opacity:1} 100%{opacity:0.6} }
+.typing { animation: pulse 1.5s infinite; }
+
+/* Chat input area (single canonical definition) */
+#chatForm { padding:1.2rem 2rem; background:var(--white); border-top:1px solid var(--gray-200); display:flex; gap:1rem; align-items:center; }
+#chatForm button { background:var(--secondary); color:var(--white); border:none; padding:0.875rem 1.5rem; border-radius:var(--radius-lg); font-weight:600; cursor:pointer; transition:all var(--transition-normal); display:flex; align-items:center; gap:0.5rem; min-width:80px; justify-content:center; }
+#chatForm button:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+#chatForm button:active { transform:translateY(0); }
+#userInput { flex:1; padding:0.95rem 1rem; border-radius:var(--radius-md); border:2px solid var(--gray-200); height:48px; font-size:1rem; }
+#sendBtn { background:var(--secondary); color:var(--secondary-light); border:none; border-radius:var(--radius-md); padding:0.9rem 1.4rem; cursor:pointer; font-weight:700; }
+
+/* ---------------------------------------------------
+   Light/Dark toggle & switch
+--------------------------------------------------- */
+.theme-toggle { cursor:pointer; font-size:1.4rem; margin-left:1rem; transition:0.3s; }
+.theme-toggle:hover { transform:scale(1.1); }
+.theme-switch { position:relative; display:inline-block; width:50px; height:24px; }
+.theme-switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:24px; }
+.slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background-color:white; transition:.4s; border-radius:50%; }
+input:checked + .slider { background-color:var(--secondary); }
+input:checked + .slider:before { transform:translateX(26px); }
+
+/* ---------------------------------------------------
+   Auth page & misc refinements
+--------------------------------------------------- */
+.auth-page { max-width:450px; margin:4rem auto; padding:2.5rem; background:var(--white); border-radius:16px; box-shadow:0 8px 20px rgba(0,0,0,0.08); animation:fadeIn 0.4s ease; }
+.auth-page h2 { text-align:center; font-family:'Poppins',sans-serif; color:var(--gray-900); margin-bottom:1.5rem; font-weight:700; }
+.auth-page input { width:100%; padding:0.85rem; border-radius:10px; border:2px solid var(--gray-200); background:var(--gray-50); transition:0.2s ease; font-size:0.95rem; }
+.auth-page input:focus { border-color:var(--secondary); background:#fff; outline:none; }
+.auth-page button { width:100%; margin-top:1.5rem; padding:0.9rem; border:none; border-radius:12px; background:var(--secondary); color:white; font-weight:700; font-size:1rem; cursor:pointer; transition:0.25s ease; }
+.auth-page button:hover { background:var(--primary); }
+.alert-error { background:#ffdddd; border-left:5px solid #ff4d4d; padding:0.8rem 1rem; border-radius:8px; margin-bottom:1rem; color:#a30000; font-weight:600; }
+.dark-theme .auth-page { background:#222; color:white; box-shadow:0 8px 20px rgba(255,255,255,0.05); }
+.dark-theme .auth-page input { background:#2c2c2c; border-color:#444; color:white; }
+.dark-theme .auth-page input:focus { border-color:var(--primary); }
+.dark-theme label, .dark-theme p { color:#eaeaea; }
+.dark-theme .alert-error { background:#660000; border-color:#ff8080; color:white; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(15px); } to { opacity:1; transform:translateY(0); } }
+
+.mindhaven-logo { font-family:'Satisfy',cursive; font-weight:600; }
+.landing-body .mindhaven-logo { color:var(--secondary); }
+.auth-page .mindhaven-logo, .chat-header .mindhaven-logo { color:white; }
+
+/* Sidebar footer & logout */
+.sidebar-footer { margin-top: 0; display:flex; justify-content:center; width:100%; padding-bottom:10px; border-top: 3px solid var(--secondary); }
+.logout-btn { width:100%; padding:10px; border:none; border-radius:5px; background-color:var(--secondary); color:#fff; cursor:pointer; transition:0.3s; }
+.logout-btn:hover { opacity:0.9; }
+
+/* Small helpers */
+/* New chat button (placed above chat list) */
+#newChatBtn { background:var(--secondary); color:var(--white); border:none; padding:0.6rem 0.85rem; border-radius:var(--radius-md); font-weight:600; cursor:pointer; transition:all var(--transition-normal); font-family:'Poppins',sans-serif; display:block; margin:0.5rem 0 0.75rem 0; }
+#newChatBtn:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+/* Ensure long lists scroll inside sidebar */
+#chatList { flex:1; overflow-y:auto; }
+
+/* Labels */
+.auth-page label {
+  display: block;
+  font-weight: 600;
+  margin: 0.6rem 0 0.2rem;
+  color: var(--gray-800);
+}
+
+
+/* Inputs */
+.auth-page input {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 10px;
+  border: 2px solid var(--gray-200);
+  background: var(--gray-50);
+  transition: 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.auth-page input:focus {
+  border-color: var(--secondary);
+  background: #fff;
+  outline: none;
+}
+
+/* Buttons */
+.auth-page button {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--secondary);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.auth-page button:hover {
+  background: var(--primary);
+}
+
+/* Paragraph + link */
+.auth-page p {
+  margin-top: 1.2rem;
+  text-align: center;
+  color: var(--gray-700);
+}
+
+.auth-page a {
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-page a:hover {
+  text-decoration: underline;
+}
+
+/* Error alert */
+.alert-error {
+  background: #ffdddd;
+  border-left: 5px solid #ff4d4d;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  color: #a30000;
+  font-weight: 600;
+}
+
+/* Dark mode support */
+.dark-theme .auth-page {
+  background: #222;
+  color: white;
+  box-shadow: 0 8px 20px rgba(255,255,255,0.05);
+}
+
+.dark-theme .auth-page input {
+  background: #2c2c2c;
+  border-color: #444;
+  color: white;
+}
+
+.dark-theme .auth-page input:focus {
+  border-color: var(--primary);
+}
+
+.dark-theme label,
+.dark-theme p {
+  color: #eaeaea;
+}
+
+.dark-theme .alert-error {
+  background: #660000;
+  border-color: #ff8080;
+  color: white;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mindhaven-logo {
+  font-family: 'Satisfy', cursive;
+  font-weight: 600;
+}
+
+/* Specific landing page override */
+.landing-body .mindhaven-logo {
+  color: var(--secondary); /* orange */
+}
+
+/* Other pages default white */
+.auth-page .mindhaven-logo,
+.chat-header .mindhaven-logo {
+  color: white;
+}
+
+/* Sidebar Footer for Logout Button */
+.sidebar-footer {
+  position: absolute;
+  bottom: 20px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+/* Theme switch styling */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--secondary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.chat-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-right: 3px solid var(--secondary);
+}
+
+.sidebar-middle {
+  flex: 1;              /* Takes all available space */
+  overflow-y: auto;     /* Makes the chat list scrollable */
+  margin: 1rem 0;       /* Optional spacing */
+}
+
+.sidebar-footer {
+  /* Footer stays at bottom but inside flex layout */
+  margin-top: 0; /* no absolute positioning */
+  padding: 12px 0;
+  border-top: 3px solid var(--secondary);
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+
+#chatList {
+  flex: 1; /* takes all available space above logout */
+  overflow-y: auto;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* New chat button stays at the top area */
+#newChatBtn {
+  margin-top: 1rem;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--secondary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: var(--secondary);
+  color: var(--white);
+  border-color: var(--secondary);
+} 
+
+.chat-item {
+  display: flex;               /* Make it a flex container */
+  justify-content: space-between; /* Title left, button right */
+  align-items: center;         /* Vertically center items */
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-300);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--white);
+}
+
+.chat-menu-wrapper {
+  position: relative;
+  margin-left: 8px;            /* Optional spacing from title */
+}
+
+.chat-title {
+  flex: 1;                    
+  white-space: nowrap;         
+  overflow: hidden;            
+  text-overflow: ellipsis;     
+}
+
+
+.chat-item:hover {
+  background-color: var(--gray-100);
+}
+
+.chat-item.active {
+  border: 2px solid var(--secondary);
+  background-color: var(--gray-50);
+}
+
+.chat-menu-wrapper {
+  position: relative;
+}
+
+.chat-menu-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 6px;
+}
+
+.chat-menu {
+  position: absolute;
+  right: 0;
+  top: 22px;
+  display: none;
+  background: var(--sidebar-bg, #f4f4f4);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 120px;
+  z-index: 20;
+}
+
+.chat-menu .chat-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.chat-menu .chat-menu-item:hover {
+  background: #ddd;
+}
+
+.rename-input {
+  width: 85%;
+  padding: 3px 6px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.feedback-btn-container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.feedback-btn {
+  display: inline-block;
+  background-color: #4c8bf5;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  width: 90%;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.feedback-btn:hover {
+  background-color: #326bd4;
+}
+
+/* ---------------------------------------------------
+   feedback css*/
+
+   .feedback-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background: var(--gray-50);
+}
+
+.feedback-container {
+  background: var(--white);
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.feedback-container h2 {
+  margin-bottom: 1.5rem;
+  color: var(--gray-900);
+  font-family: 'Poppins', sans-serif;
+}
+
+.feedback-form .form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.feedback-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--gray-800);
+}
+
+.feedback-form textarea,
+.feedback-form select {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--gray-200);
+  font-size: 0.95rem;
+  transition: border 0.2s ease;
+}
+
+.feedback-form textarea:focus,
+.feedback-form select:focus {
+  border-color: var(--secondary);
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--secondary);
+  color: var(--white);
+  border: none;
+  padding: 0.9rem;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+  background: var(--primary);
+}
+
+/* Alerts */
+.alert {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.alert-error {
+  background: #ffdddd;
+  border-left: 5px solid #ff4d4d;
+  color: #a30000;
+}
+
+.alert-success {
+  background: #ddffdd;
+  border-left: 5px solid #4caf50;
+  color: #2e7d32;
+}
+
+
+
+
+/* Star rating */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 2rem;
+  margin-top: 0.75rem;
+}
+
+.star-rating input {
+  display: none; /* hide the radio buttons */
+}
+
+.star-rating label,
+.star-label {
+  cursor: pointer;
+  color: var(--gray-300);
+  transition: all 0.2s ease;
+  user-select: none;
+  display: inline-block;
+  padding: 0.25rem;
+}
+
+.star-rating label:hover,
+.star-label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: var(--secondary);
+  transform: scale(1.15);
+  text-shadow: 0 0 10px rgba(251, 133, 0, 0.3);
+}
+
+.star-rating input:checked ~ label {
+  animation: starPulse 0.3s ease;
+}
+
+@keyframes starPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1.15); }
+}
+
+/* -----------------------------
+   Sidebar Layout & Scroll Fix
+----------------------------- */
+.chat-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-right: 3px solid var(--secondary);
+}
+
+/* Middle section: chat list scrolls but stops above footer */
+.sidebar-middle {
+  flex: 1;
+  overflow-y: auto;
+  margin: 1rem 0 0 0;
+  padding-bottom: 0; /* no padding to prevent overlap */
+  min-height: 0; /* critical for flex to work correctly */
+}
+
+/* Footer section: logout button */
+.sidebar-footer {
+  margin-top: 0;        /* no top margin */
+  padding-top: 12px;
+  padding-bottom: 0;
+  border-top: 3px solid var(--secondary); /* prominent separation border */
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;       /* prevent shrinking */
+  background-color: var(--gray-50);  /* opaque background */
+}
+
+/* Logout button styling */
+.logout-btn {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  background-color: var(--white);
+  color: var(--text-dark);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.logout-btn:hover {
+  border-color: var(--secondary);
+  background-color: var(--gray-50);
+  color: var(--secondary);
+}
+
+/* Chat list container (scrollable) */
+#chatList {
+  flex: 1;               /* take all available space above footer */
+  overflow-y: auto;      /* scrollable */
+  margin-bottom: 0;      /* no margin below - stops where border begins */
+  padding-bottom: 0;     /* no padding below */
+}
+
+darkstyles.css 
+
+/* ------------------------------
+   DARK THEME – MindHaven Chat
+------------------------------- */
+
+/* Global Background + Text */
+body,
+.chat-container {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+
+/* ------------------------------
+   SIDEBAR
+------------------------------- */
+
+.chat-sidebar {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.chat-sidebar h3 {
+  color: #f5f5f5;
+}
+
+#newChatBtn,
+.sidebar-footer a {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  text-align: center;
+  display: block;
+}
+
+#newChatBtn:hover,
+.sidebar-footer a:hover {
+  background-color: var(--secondary);
+  color: #fff;
+}
+
+/* Logout button at bottom */
+.sidebar-footer {
+  width: 100%;
+  padding: 0 10px;
+  /* ensure footer sits at bottom of the sidebar */
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  border-top: 3px solid var(--secondary);
+  flex-shrink: 0;
+  background-color: #1e1e1e;  /* opaque dark background */
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #121212;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.logout-btn:hover {
+  border-color: var(--secondary);
+  background-color: #1f1f1f;
+  color: var(--secondary);
+}
+
+/* Make the chat list grow to push footer down */
+#chatList {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+
+/* ------------------------------
+   CHAT MAIN AREA
+------------------------------- */
+
+.chat-main {
+  background-color: #181818;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ------------------------------
+   CHAT HEADER
+------------------------------- */
+
+.chat-header {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+}
+
+/* MindHaven Logo */
+.mindhaven-logo {
+  font-family: 'Satisfy', cursive;
+  color: var(--secondary);
+  font-size: 1.6rem;
+}
+
+
+/* ------------------------------
+   MESSAGES AREA
+------------------------------- */
+
+.chat-messages {
+  background-color: #181818;
+  color: #e0e0e0;
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  height: calc(100vh - 220px);
+}
+
+.chat-messages p.text-muted {
+  color: #aaa;
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background-color: #181818;
+}
+
+
+/* ------------------------------
+   BOT RECOMMENDATIONS
+------------------------------- */
+
+.bot-recommendation {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  padding: 15px 20px;
+  border-top: 1px solid #333;
+}
+
+
+/* ------------------------------
+   USER INPUT BOX
+------------------------------- */
+
+#chatForm {
+  display: flex;
+  padding: 15px 20px;
+  background-color: #1f1f1f;
+  border-top: 1px solid #333;
+  gap: 10px;
+}
+
+/* Corrected + Clean */
+#userInput {
+  flex: 1;
+  height: 38px;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #121212;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+
+#chatForm button {
+  padding: 0 20px;
+  height: 38px;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+#chatForm button:hover {
+  opacity: 0.9;
+}
+
+from here its anything to do with chat:
+chat.js:
+document.addEventListener('DOMContentLoaded', () => {
+  const chatBox = document.getElementById('chatMessages');
+  const input = document.getElementById('userInput');
+  const form = document.getElementById('chatForm');
+  const sidebar = document.getElementById('chatList');
+  const recommendationEl = document.getElementById('recommendation');
+  const newChatBtn = document.getElementById('newChatBtn');
+  let currentChatId = null;
+
+  // Emotion → emoji map
+  const emotionEmojis = {
+    admiration: "✨", amusement: "😄", anger: "😡", annoyance: "😤", approval: "👍",
+    caring: "🤗", confusion: "😕", curiosity: "🤔", desire: "❤️", disappointment: "😞",
+    disapproval: "👎", disgust: "🤢", embarrassment: "😳", excitement: "🤩", fear: "😨",
+    gratitude: "🙏", grief: "💔", joy: "😊", love: "❤️", nervousness: "😬",
+    optimism: "🌟", pride: "😌", realization: "💡", relief: "😌", remorse: "😣",
+    sadness: "😢", surprise: "😲", neutral: "😐"
+  };
+
+  /* ------------------------------
+      LOAD CHATS IN SIDEBAR
+  ------------------------------ */
+  async function loadChats() {
+  try {
+    const res = await fetch('/api/chats', { credentials: 'include' });
+    const chats = await res.json();
+    sidebar.innerHTML = '';
+
+    if (chats.length === 0) {
+      sidebar.innerHTML = '<p class="text-muted">No chats yet. Click + New Chat to start.</p>';
+      return;
+    }
+
+    chats.forEach(chat => {
+      sidebar.insertAdjacentHTML('beforeend', renderChatItem(chat));
+    });
+
+    // Re-attach click events for opening chats
+    document.querySelectorAll(".chat-item").forEach(item => {
+      item.addEventListener('click', e => {
+        // Prevent clicking delete button from opening chat
+        if (e.target.classList.contains("delete-chat-btn")) return;
+
+        const chatId = item.dataset.id;
+        openChat(chatId);
+      });
+    });
+
+  } catch (err) {
+    sidebar.innerHTML = '⚠️ Failed to load chats.';
+    console.error(err);
+  }
+}
+
+
+  /* ------------------------------
+      OPEN A CHAT + LOAD MESSAGES
+  ------------------------------ */
+ async function openChat(chatId) {
+  currentChatId = chatId;
+  setActiveChat(chatId); // <-- highlight the active chat
+  chatBox.innerHTML = '<p class="text-muted">Loading messages...</p>';
+
+  try {
+    const res = await fetch(`/api/chats/${chatId}/messages`, { credentials: 'include' });
+    const messages = await res.json();
+    chatBox.innerHTML = '';
+
+    if (messages.length === 0) {
+      appendMessage("What's on your mind today?", 'bot', 'neutral');
+    } else {
+      messages.forEach(msg => appendMessage(msg.text, msg.sender, msg.emotion));
+    }
+
+  } catch (err) {
+    chatBox.innerHTML = '⚠️ Failed to load messages.';
+    console.error(err);
+  }
+}
+
+function setActiveChat(chatId) {
+  document.querySelectorAll(".chat-item").forEach(c => c.classList.remove("active"));
+  const activeChat = document.querySelector(`.chat-item[data-id='${chatId}']`);
+  if (activeChat) activeChat.classList.add("active");
+}
+
+  /* ------------------------------
+         CREATE NEW CHAT
+  ------------------------------ */
+  newChatBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch('/api/chats/new', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      const chat = await res.json();
+
+      await loadChats();
+      await openChat(chat._id);
+
+    } catch (err) {
+      alert('⚠️ Could not create new chat.');
+      console.error(err);
+    }
+  });
+
+  /* ------------------------------
+            SEND MESSAGE
+  ------------------------------ */
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (!currentChatId) {
+      return alert('Select or create a chat first.');
+    }
+
+    const message = input.value.trim();
+    if (!message) return;
+
+    appendMessage(message, 'user');
+    input.value = '';
+
+    const typingEl = appendMessage('MindHaven is thinking...', 'bot typing');
+
+    try {
+      /* BOT RESPONSE */
+      const res = await fetch(`/api/chats/${currentChatId}/botMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ message, userId: window.USER_ID })
+      });
+
+      const data = await res.json();
+      typingEl.remove();
+
+      const emoji = emotionEmojis[data.emotion?.toLowerCase()] || '🤖';
+      appendMessage(`${emoji} ${data.reply}`, 'bot');
+
+      if (data.recommendation) {
+        recommendationEl.innerHTML = `<p>${escapeHtml(data.recommendation)}</p>`;
+      }
+
+      /* SAVE USER MESSAGE */
+      fetch('/api/chats/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          chat: currentChatId,
+          sender: 'user',
+          text: message
+        })
+      });
+
+      /* SAVE BOT MESSAGE */
+      fetch('/api/chats/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          chat: currentChatId,
+          sender: 'bot',
+          text: `${emoji} ${data.reply}`,
+          emotion: data.emotion
+        })
+      });
+
+    } catch (err) {
+      typingEl.remove();
+      appendMessage(`⚠️ Something went wrong (${err.message})`, 'bot');
+      console.error(err);
+    }
+  });
+
+  /* ------------------------------
+         APPEND MESSAGE TO UI
+  ------------------------------ */
+  function appendMessage(text, sender, emotion) {
+    const msg = document.createElement('div');
+    msg.className = sender.includes('bot') ? 'bot-msg' : 'user-msg';
+    if (sender.includes('typing')) msg.classList.add('typing');
+
+    msg.innerHTML = sender === 'user' ? escapeHtml(text) : text;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return msg;
+  }
+
+async function deleteChat(chatId) {
+  if (!confirm("Are you sure you want to delete this chat?")) return;
+
+  try {
+    const res = await fetch(`/api/chats/${chatId}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // Remove chat from sidebar
+      document.querySelector(`.chat-item[data-id='${chatId}']`).remove();
+
+      // If user is currently viewing it, clear the chat box
+      if (currentChatId === chatId) {
+        chatBox.innerHTML = "<p>Select a chat to begin</p>";
+        currentChatId = null;
+      }
+    } else {
+      alert(data.message);
+    }
+
+  } catch (err) {
+    console.error("Delete error:", err);
+    alert("Failed to delete chat.");
+  }
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("rename-chat-btn")) {
+    const chatId = e.target.dataset.id;
+    const item = document.querySelector(`.chat-item[data-id='${chatId}']`);
+    const titleEl = item.querySelector(".chat-title");
+
+    startRename(chatId, titleEl);
+  }
+});
+
+function startRename(chatId, titleEl) {
+  const currentTitle = titleEl.textContent;
+
+  const input = document.createElement("input");
+  input.value = currentTitle;
+  input.className = "rename-input";
+
+  titleEl.replaceWith(input);
+  input.focus();
+
+  // Save on Enter or on blur
+  input.addEventListener("blur", () => finishRename(chatId, input));
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") finishRename(chatId, input);
+  });
+}
+
+async function finishRename(chatId, input) {
+  const newTitle = input.value.trim() || "Untitled Chat";
+
+  try {
+    await fetch(`/api/chats/${chatId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ title: newTitle })
+    });
+
+    const span = document.createElement("span");
+    span.className = "chat-title";
+    span.textContent = newTitle;
+
+    input.replaceWith(span);
+
+  } catch (err) {
+    console.error("Rename failed:", err);
+    alert("Rename failed.");
+    input.replaceWith(span);
+  }
+}
+
+
+
+function renderChatItem(chat) {
+  return `
+    <div class="chat-item" data-id="${chat._id}">
+      <span class="chat-title">${chat.title || "Untitled Chat"}</span>
+
+      <div class="chat-menu-wrapper">
+        <button class="chat-menu-btn" data-id="${chat._id}">⋮</button>
+
+        <div class="chat-menu" id="menu-${chat._id}">
+          <div class="chat-menu-item rename-chat-btn" data-id="${chat._id}">Rename</div>
+          <div class="chat-menu-item delete-chat-btn" data-id="${chat._id}">Delete</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.addEventListener('click', (e) => {
+  // Toggle menu
+  if (e.target.classList.contains('chat-menu-btn')) {
+    const chatId = e.target.dataset.id;
+    const menu = document.getElementById(`menu-${chatId}`);
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    return;
+  }
+
+  // Close menus when clicking outside
+  if (!e.target.closest('.chat-menu-wrapper')) {
+    document.querySelectorAll('.chat-menu').forEach(menu => {
+      menu.style.display = 'none';
+    });
+  }
+});
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('delete-chat-btn')) {
+    const chatId = e.target.dataset.id;
+    deleteChat(chatId);
+  }
+});
+
+  /* ------------------------------
+             ESCAPE HTML
+  ------------------------------ */
+  function escapeHtml(s = '') {
+    return s.replace(/[&<>"']/g, m => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[m]));
+  }
+
+  /* ------------------------------
+       THEME TOGGLE w/ MEMORY
+  ------------------------------ */
+  (function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const saved = localStorage.getItem('theme');
+    const isDark = saved === 'dark';
+    const darkStylesheet = document.getElementById('darkThemeStylesheet');
+
+    document.body.classList.toggle('dark-theme', isDark);
+    if (darkStylesheet) darkStylesheet.disabled = !isDark;
+
+    themeToggle.checked = isDark;
+
+    themeToggle.addEventListener('change', () => {
+      const nowDark = themeToggle.checked;
+      document.body.classList.toggle('dark-theme', nowDark);
+      if (darkStylesheet) darkStylesheet.disabled = !nowDark;
+      try {
+        localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+      } catch (e) {}
+    });
+  })();
+
+  /* ------------------------------
+         INIT — LOAD CHATS
+  ------------------------------ */
+  loadChats();
+});
+
+
+chatRoutes.js:
+// src/routes/chatRoutes.js
+const express = require('express');
+const router = express.Router();
+const Chat = require('../models/chat');
+const Message = require('../models/Message');
+const conversationLoop = require('../chatbot/conversationLoop');
+
+// -------------------------
+// Get all chats for user
+// -------------------------
+router.get('/', async (req, res) => {
+  try {
+    const chats = await Chat.find({ userId: req.user._id }).sort({ createdAt: -1 });
+    res.json(chats);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch chats' });
+  }
+});
+
+// -------------------------
+// Create a new chat
+// -------------------------
+router.post('/new', async (req, res) => {
+  try {
+    const chat = new Chat({
+      userId: req.user._id,
+      title: "chat"
+    });
+
+    await chat.save();
+    res.json(chat);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create chat' });
+  }
+});
+
+// -------------------------
+// Load messages for a chat
+// -------------------------
+router.get('/:chatId/messages', async (req, res) => {
+  try {
+    const messages = await Message.find({ chat: req.params.chatId }).sort({ createdAt: 1 });
+    res.json(messages);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load messages' });
+  }
+});
+
+// DELETE a chat
+router.delete('/:chatId', async (req, res) => {
+  try {
+    const { chatId } = req.params;
+
+    // Ensure the chat belongs to the logged-in user
+    const chat = await Chat.findOne({ _id: chatId, userId: req.user._id });
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' });
+    }
+
+    // Delete the chat and its messages
+    await Message.deleteMany({ chatId });
+    await Chat.findByIdAndDelete(chatId);
+
+    res.json({ message: 'Chat deleted successfully' });
+  } catch (err) {
+    console.error('Delete chat error:', err);
+    res.status(500).json({ message: 'Server error deleting chat' });
+  }
+});
+
+
+
+// -------------------------
+// Save a user/bot message
+// -------------------------
+router.post('/message', async (req, res) => {
+  try {
+    const { chat, sender, text, emotion } = req.body;
+
+    const message = new Message({
+      chat,      // MUST be "chat", not "chatId"
+      sender,
+      text,
+      emotion
+    });
+
+    await message.save();
+    res.json(message);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to save message' });
+  }
+});
+
+// -------------------------
+// Generate bot reply using
+// ConversationLoop AI Engine
+// -------------------------
+router.post('/:chatId/botMessage', async (req, res) => {
+  try {
+    const { message } = req.body;
+    const userId = req.user._id;
+    const chatId = req.params.chatId;
+
+    // RUN THE AI ENGINE 🔥
+    const ai = await conversationLoop.processMessage(message, userId);
+
+    // Save bot message
+    const botMessage = new Message({
+      chat: chatId,
+      sender: "bot",
+      text: ai.reply,
+      emotion: ai.emotion
+    });
+
+    await botMessage.save();
+
+    // Return AI result to frontend
+    res.json({
+      reply: ai.reply,
+      emotion: ai.emotion,
+      recommendation: ai.resources?.length > 0 ? ai.resources[0] : null
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Bot failed to respond' });
+  }
+});
+
+// Rename chat
+router.patch('/:id', async (req, res) => {
+  try {
+    const chat = await Chat.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      { title: req.body.title },
+      { new: true }
+    );
+
+    if (!chat) return res.status(404).json({ message: "Chat not found" });
+
+    res.json({ message: "Chat renamed", chat });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+module.exports = router;
+
+
+User.js:
+// src/models/User.js
+const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema({
+  name: { type: String },
+  email: { type: String, unique: true, sparse: true },
+  passwordHash: { type: String },
+  failedAttempts: { type: Number, default: 0 },   // 🚨 tracks wrong tries
+  isLocked: { type: Boolean, default: false },    // 🔒 lock flag
+  lockUntil: { type: Date },                      // ⏰ optional auto-unlock timer
+  createdAt: { type: Date, default: Date.now },
+  personality: { type: String, enum: ['warm','calm','direct','neutral'], default: 'warm' },
+  isAdmin: { type: Boolean, default: false },     // 👨‍💼 admin flag
+
+});
+
+module.exports = mongoose.model('User', UserSchema);
+
+
+

@@ -1,0 +1,37 @@
+{{> header user=user landing=false}}
+
+<section id="resources" class="resources-section py-5">
+  <div class="container">
+    <h2 class="fw-bold text-center mb-5" data-aos="fade-up">
+      Helpful Mental Health Resources
+    </h2>
+
+    {{!-- Loop through categories --}}
+    {{#each resources}}
+      <h3 class="text-capitalize fw-bold mt-5 mb-3" data-aos="fade-up">{{@key}}</h3>
+      <div class="row g-4 justify-content-center mb-5">
+        {{#each this}}
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-4 rounded shadow feature-card h-100">
+
+              <h5 class="fw-bold mb-2">{{title}}</h5>
+
+              {{#if description}}
+                <p>{{description}}</p>
+              {{/if}}
+
+              {{!-- Show phone number with emoji if exists --}}
+              {{#if phone}}
+                <p>📞 {{phone}}</p>
+              {{else if url}}
+                <a href="{{url}}" target="_blank" class="btn btn-sm btn-outline-primary">Visit</a>
+              {{/if}}
+
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{/each}}
+
+  </div>
+</section>

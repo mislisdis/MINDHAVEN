@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindHaven Admin Login</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&family=Satisfy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
+  <style>
+    .admin-login-page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 2rem;
+    }
+
+    .admin-login-card {
+      background: var(--white);
+      padding: 3rem 2.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 420px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .admin-login-card h1 {
+      text-align: center;
+      color: var(--gray-900);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .admin-login-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--secondary);
+      outline: none;
+      background: var(--white);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .alert-error {
+      background: #ffdddd;
+      border-left: 5px solid #ff4d4d;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      color: #a30000;
+      font-weight: 600;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .back-link a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dark theme */
+    .dark-theme .admin-login-card {
+      background: #1e1e1e;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .admin-login-card h1 {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .form-group label {
+      color: #b0b0b0;
+    }
+
+    .dark-theme .form-control {
+      background: #121212;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .form-control:focus {
+      border-color: var(--secondary);
+      background: #181818;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-container .mindhaven-logo {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+
+<body class="admin-login-page">
+
+<div class="admin-login-card">
+  <!-- Logo -->
+  <div class="logo-container">
+    <h1><span class="mindhaven-logo">MindHaven</span></h1>
+    <p class="admin-login-subtitle">Admin Panel</p>
+  </div>
+
+  <!-- Error Alert -->
+  {{#if error}}
+    <div class="alert-error">
+      {{ error }}
+    </div>
+  {{/if}}
+
+  <!-- Login Form -->
+  <form method="POST" action="/api/auth/admin/login">
+    <div class="form-group">
+      <label for="email">Admin Email</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="admin@mindhaven.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+    </div>
+
+    <button type="submit" class="submit-btn">Login to Admin Dashboard</button>
+  </form>
+
+  <div class="back-link">
+    <a href="/">← Back to Home</a>
+  </div>
+</div>
+
+<!-- Theme Toggle -->
+<script>
+  // Check for saved dark theme preference
+  const darkThemeEnabled = localStorage.getItem('darkTheme') === 'true';
+  const html = document.documentElement;
+  const darkStylesheet = document.getElementById('darkThemeStylesheet');
+
+  if (darkThemeEnabled) {
+    html.classList.add('dark-theme');
+    darkStylesheet.disabled = false;
+  }
+</script>
+
+</body>
+</html>

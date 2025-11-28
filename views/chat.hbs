@@ -25,11 +25,18 @@
     <header class="chat-header">
       <h2 class="mindhaven-logo" style="font-family: 'Satisfy', cursive;">MindHaven</h2>
 
-      <!-- Theme Toggle Switch -->
-      <label class="theme-switch">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider round"></span>
-      </label>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <!-- Give Feedback Button -->
+        <a href="/feedback" class="feedback-btn" style="margin: 0; width: auto; display: inline-block; padding: 0.6rem 1rem; background-color: var(--secondary); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s ease;">
+          💬 Give Feedback
+        </a>
+
+        <!-- Theme Toggle Switch -->
+        <label class="theme-switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </header>
 
     <!-- Messages -->
@@ -43,7 +50,9 @@
     <!-- User Input -->
     <form id="chatForm">
       <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
+      <button type="button" id="startRecording">🎤</button> <!-- Mic button -->
       <button type="submit">Send</button>
+
     </form>
   </section>
 </div>

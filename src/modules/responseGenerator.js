@@ -1,178 +1,208 @@
 // src/modules/responseGenerator.js
-const fs = require('fs');
-const path = require('path');
-const { getQuestions } = require('./therapeuticQuestioner');
+const fs = require("fs");
+const path = require("path");
+const openai = require("./openaiClient");
+const { checkForCrisis } = require("./safetyFilter");
+const { getQuestions } = require("./therapeuticQuestioner");
 
-// ---------- Load intents ----------
+// -------------------- Load Intents --------------------
 let intents = null;
 try {
-  const p = path.join(__dirname, '../../data/intents.json');
+  const p = path.join(__dirname, "../../data/intents.json");
   if (fs.existsSync(p)) {
-    intents = JSON.parse(fs.readFileSync(p, 'utf8'));
-    console.log("✅ Loaded intents.json (responseGenerator)");
+    intents = JSON.parse(fs.readFileSync(p, "utf8"));
+    console.log("✅ Loaded intents.json");
   }
 } catch (e) {
   console.error("❌ Failed to load intents.json", e);
 }
 
-// ---------- Helpers ----------
-function safeText(s) { return (s || '').toString().trim(); }
-
-function pickBaseReply(emotion) {
-  emotion = (emotion || 'neutral').toLowerCase();
-  if (intents && intents[emotion] && intents[emotion].length > 0) {
-    const arr = intents[emotion];
-    return arr[Math.floor(Math.random() * arr.length)];
+// -------------------- Load Resource Library --------------------
+let resourceLibrary = {};
+try {
+  const rp = path.join(__dirname, "../../data/resources.json");
+  if (fs.existsSync(rp)) {
+    resourceLibrary = JSON.parse(fs.readFileSync(rp, "utf8"));
+    console.log("✅ Loaded resources.json");
   }
-  return "I'm here with you — what’s on your mind?";
+} catch (e) {
+  console.error("❌ Failed to load resources.json", e);
 }
 
-// ---------- Severity ----------
-function determineSeverity({ emotion, longTerm, confidence = 0.6 }) {
-  let severity = 'low';
-  if (confidence >= 0.85) severity = 'high';
-  else if (confidence >= 0.65) severity = 'medium';
-
-  if (longTerm && longTerm.messageCount >= 8) {
-    const negs = ['sadness','grief','anger','fear','anxiety','remorse','disappointment'];
-    if (negs.includes((longTerm.dominantEmotion || '').toLowerCase())) {
-      severity = severity === 'low' ? 'medium' : 'high';
-    }
-  }
-  return severity;
+// -------------------- Helpers --------------------
+function pickIntent(emotion) {
+  if (!intents || !intents[emotion]) return null;
+  const arr = intents[emotion];
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function chooseTone(personality = 'warm', severity = 'low') {
-  personality = (personality || 'warm').toLowerCase();
-  if (personality === 'calm') return 'calm';
-  if (personality === 'direct') return severity === 'high' ? 'calm' : 'neutral';
-  if (severity === 'high') return 'calm';
-  if (severity === 'medium') return 'warm';
-  return 'neutral';
+function soften(text) {
+  const soft = [
+    " I'm here with you.",
+    " You don’t have to go through this alone.",
+    " If you want, we can talk through it together.",
+  ];
+  return text + soft[Math.floor(Math.random() * soft.length)];
 }
 
-function applyTone(reply, tone = 'warm') {
-  const extra = "I’m here for you — we can take this at your pace.";
-  if (tone === 'calm') return reply.includes(extra) ? reply : `${reply} I'm here with you. Let's take this one step at a time.`;
-  if (tone === 'neutral') return reply;
-  return reply.includes(extra) ? reply : `${reply} ${extra}`;
+function summarizeContext(messages) {
+  if (!messages) return "";
+  const recent = messages
+    .slice(-4)
+    .map(m => m.trim())
+    .filter(Boolean)
+    .map(msg => (msg.length > 50 ? msg.slice(0, 50) + "..." : msg));
+  return recent.join(" | ");
 }
 
-// ---------- Crisis ----------
-const despairIndicators = [
-  "i hate my life","what's the point","whats the point","i give up",
-  "i can't do this anymore","i cant do this anymore","nothing matters",
-  "i'm done","im done","i wish everything would stop","i want to die",
-  "kill myself","end it"
-];
-const negativeEmotions = ['sadness','fear','anger','grief','anxiety','remorse','disappointment'];
+// -------------------- Emotion Memory --------------------
+let emotionMemory = [];
 
-// ---------- Soft reinforcement ----------
-const softReinforcement = {
-  sadness: "You’re not alone — this sounds really heavy.",
-  fear: "That sounds worrying. You’re safe to share it here.",
-  anger: "It makes sense you’d feel angry about that.",
-  grief: "I’m sorry you’re carrying that pain.",
-  anxiety: "That’s a lot to carry. We can explore that slowly.",
-  happiness: "I’m glad to hear that! That’s wonderful 😄",
-  joy: "That’s awesome! Keep enjoying it 😊",
-  excitement: "Wow, that sounds exciting! 🎉",
-  love: "Sending warm vibes ❤️",
-  admiration: "That’s lovely to hear ✨",
-  pride: "You should feel proud of that 😌",
-  relief: "That’s a relief! Glad things are easing 😌"
-};
-
-// ---------- Quick intent detection ----------
-const greetingPatterns = ["hi","hello","hey","heyy","heyyy","good morning","good afternoon","good evening","what's up","whats up","sup"];
-const thanksPatterns = ["thanks","thank you","thx","ty"];
-const pleasePatterns = ["please","pls","plz"];
-
-function isMatch(message, patterns) {
-  const m = String(message || "").toLowerCase();
-  return patterns.some(p => m === p || m.startsWith(p) || m.includes(` ${p}`));
+function updateEmotionMemory(emotion) {
+  if (!emotion) return;
+  emotionMemory.push(emotion.toLowerCase());
+  if (emotionMemory.length > 5) emotionMemory.shift();
 }
 
-// ---------- Main generator ----------
-function generateResponse(rawEmotion, context = null, longTerm = null, options = {}) {
-  const rawMessage = (options && options.rawMessage) || "";
-  const rawLower = rawMessage.toLowerCase();
+function summarizeEmotions() {
+  if (emotionMemory.length === 0) return "";
+  const counts = {};
+  emotionMemory.forEach(e => (counts[e] = (counts[e] || 0) + 1));
+  return Object.entries(counts)
+    .map(([e, c]) => `${e}(${c})`)
+    .join(", ");
+}
 
-  // --- Quick intents ---
-  if (isMatch(rawLower, greetingPatterns)) {
-    return { reply: "Hi there 😄 How are you feeling right now?", meta: { severity:"low", tone:"warm", personality:"warm" } };
-  }
-  if (isMatch(rawLower, thanksPatterns)) {
-    return { reply: "You're welcome 💛 I'm here anytime you need me.", meta: { severity:"low", tone:"warm", personality:"warm" } };
-  }
-  if (isMatch(rawLower, pleasePatterns)) {
-    return { reply: "Of course — tell me what you’d like me to help you with 😊", meta: { severity:"low", tone:"warm", personality:"warm" } };
+// -------------------- Natural Conversational Cues --------------------
+function cues(message) {
+  const msg = message.toLowerCase();
+  if (/^(hi|hey|hello|good morning|good evening)\b/.test(msg))
+    return "Hey! How are you feeling today?";
+  if (/(thank you|thanks|thx)/.test(msg))
+    return "You're welcome. How are you feeling now?";
+  if (/(bye|goodbye|see you)/.test(msg))
+    return "Goodbye! Take care — you can talk to me anytime.";
+  return null;
+}
+
+// -------------------- Crisis Response --------------------
+function crisisReply() {
+  return {
+    reply:
+      "I'm really glad you said something. What you're feeling is serious, and you deserve real support.\n\n" +
+      "📞 Kenya Red Cross Hotline: 1199\n" +
+      "💛 Befrienders Kenya: 0722 178 177\n\n" +
+      "You’re not alone — I’m here with you.",
+    meta: { severity: "high", tone: "calm" },
+  };
+}
+
+// -------------------- Resource Suggestion --------------------
+function maybeSuggestResources(emotion) {
+  // For some moods, randomly decide whether to attach resources
+  const chance = 0.3; // 30% of appropriate times
+  if (Math.random() > chance) return null;
+
+  const list = resourceLibrary[emotion] || resourceLibrary["neutral"] || [];
+  if (!list.length) return null;
+
+  // pick 1 or 2 resources
+  const shuffled = list.sort(() => 0.5 - Math.random());
+  const picks = shuffled.slice(0, Math.min(2, list.length));
+  return picks;
+}
+
+// -------------------- Fallback --------------------
+function fallback(emotion, rawMessage) {
+  const emotionalSupport = {
+    sadness: "I hear you — that sounds really heavy.",
+    anxiety: "I understand — that must feel overwhelming.",
+    anger: "It’s okay to feel upset about that.",
+    fear: "That sounds unsettling. It’s okay to feel that way.",
+  };
+
+  let reply = emotionalSupport[emotion] || pickIntent(emotion) || "I’m here with you. Tell me more if you want.";
+
+  if (!emotionalSupport[emotion]) {
+    const q = getQuestions(emotion, "low", rawMessage);
+    if (q && q[0]) reply += " " + q[0];
   }
 
-  // --- Emotion ---
-  let emotion = 'neutral';
-  let confidence = 0.6;
-  if (typeof rawEmotion === 'string') emotion = rawEmotion;
-  else if (rawEmotion && typeof rawEmotion === 'object') {
-    emotion = rawEmotion.emotion || 'neutral';
-    confidence = typeof rawEmotion.confidence === 'number' ? rawEmotion.confidence : confidence;
+  const resources = maybeSuggestResources(emotion);
+  if (resources) {
+    reply += "\n\nIf you like, you might find these helpful:\n";
+    resources.forEach(r => {
+      reply += `- ${r.title}: ${r.url}\n`;
+    });
   }
+
+  return { reply: soften(reply), meta: { tone: "warm", severity: "low" } };
+}
+
+// -------------------- Main Response Generator --------------------
+async function generateResponse(rawEmotion, conversationContext, longTerm, opts = {}) {
+  const rawMsg = (opts.rawMessage || "").trim();
+
+  const { level } = checkForCrisis(rawMsg);
+  if (level === 2) return crisisReply();
+  if (level === 1) {
+    return {
+      reply: "I hear you — that sounds really difficult. Do you want to tell me more about what you're feeling?",
+      meta: { severity: "medium", tone: "warm" },
+    };
+  }
+
+  const cue = cues(rawMsg);
+  if (cue) return { reply: cue, meta: { tone: "friendly", severity: "low" } };
+
+  let emotion = "neutral";
+  if (typeof rawEmotion === "string") emotion = rawEmotion;
+  if (rawEmotion && rawEmotion.emotion) emotion = rawEmotion.emotion;
   emotion = emotion.toLowerCase();
 
-  // Crisis detection
-  let forcedDespair = false;
-  if (despairIndicators.some(d => rawLower.includes(d))) {
-    forcedDespair = true;
-    emotion = 'sadness';
-    confidence = Math.max(confidence, 0.99);
-  }
+  updateEmotionMemory(emotion);
 
-  let severity = determineSeverity({ emotion, longTerm, confidence });
-  if (forcedDespair || (severity === 'high' && negativeEmotions.includes(emotion))) severity = 'high';
-  else if (!negativeEmotions.includes(emotion) && severity === 'high') severity = 'medium';
+  const contextSummary = summarizeContext(conversationContext);
+  const emotionSummary = summarizeEmotions();
 
-  const personality = (options && options.personality) || (longTerm && longTerm.personality) || 'warm';
-  const tone = chooseTone(personality, severity);
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a warm, empathetic mental‑health chatbot. Respond naturally, acknowledge emotions, and offer gentle support. " +
+            "Reference context and recent emotions subtly if helpful. Never repeat user's exact messages verbatim."
+        },
+        contextSummary
+          ? { role: "system", content: `Key conversation points: ${contextSummary}` }
+          : null,
+        emotionSummary
+          ? { role: "system", content: `User’s recent emotional states: ${emotionSummary}` }
+          : null,
+        { role: "user", content: rawMsg },
+      ].filter(Boolean),
+      temperature: 0.7,
+      max_tokens: 200,
+    });
 
-  // --- Base reply ---
-  let reply = pickBaseReply(emotion);
-  if (severity === 'high' && negativeEmotions.includes(emotion)) {
-    reply = softReinforcement[emotion] || "I’m really glad you told me that. This sounds really heavy.";
-  } else if (softReinforcement[emotion] && !negativeEmotions.includes(emotion)) {
-    reply = softReinforcement[emotion];
-  }
+    let reply = completion.choices[0].message.content.trim();
 
-  // --- Long-term reference ---
-  if (severity !== 'high' && longTerm && longTerm.messageCount >= 8) {
-    if (longTerm.dominantEmotion && longTerm.dominantEmotion.toLowerCase() !== emotion) {
-      reply += ` I remember you've been feeling more ${longTerm.dominantEmotion} recently. Does any of that connect?`;
+    // Optionally add resources
+    const resources = maybeSuggestResources(emotion);
+    if (resources) {
+      reply += "\n\nYou might find these helpful:";
+      resources.forEach(r => {
+        reply += `\n- ${r.title}: ${r.url}`;
+      });
     }
-  }
 
-  // --- Short-term context (skip trivial messages) ---
-  const safeContext = safeText(context || '');
-  if (severity !== 'high' && safeContext.split('→').length >= 2) {
-    const trivial = ['hi', 'hello', 'hey', 'yes', 'no', 'ok', 'okay', 'hmm'];
-    const segments = safeContext
-      .split('→')
-      .map(s => s.trim())
-      .filter(s => s.length > 2 && !trivial.includes(s.toLowerCase()));
-    
-    if (segments.length >= 2) {
-      const lastTwo = segments.slice(-2).join(' → ');
-      const contextPrompt = `From earlier you said: "${lastTwo}". If you want, we can work through that together.`;
-      if (!reply.includes(contextPrompt)) reply += ` ${contextPrompt}`;
-    }
+    return { reply: soften(reply), meta: { severity: "low", tone: "warm" } };
+  } catch (err) {
+    console.error("❌ OpenAI error:", err.message);
+    return fallback(emotion, rawMsg);
   }
-
-  // --- Therapeutic question ---
-  const questions = getQuestions(emotion, severity, context);
-  if (severity !== 'high' && Array.isArray(questions) && questions.length > 0) {
-    reply += ` ${questions[0]}`;
-  }
-
-  // --- Final tone ---
-  return { reply: applyTone(reply, tone), meta: { severity, tone, personality } };
 }
 
 module.exports = generateResponse;

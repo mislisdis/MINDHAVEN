@@ -57,7 +57,7 @@ router.post('/message', async (req, res) => {
     const { chat, sender, text, emotion } = req.body;
 
     const message = new Message({
-      chat,      // MUST be "chat", not "chatId"
+      chat,
       sender,
       text,
       emotion
@@ -73,8 +73,7 @@ router.post('/message', async (req, res) => {
 });
 
 // -------------------------
-// Generate bot reply using
-// ConversationLoop AI Engine
+// Generate bot reply using AI engine
 // -------------------------
 router.post('/:chatId/botMessage', async (req, res) => {
   try {
@@ -82,10 +81,8 @@ router.post('/:chatId/botMessage', async (req, res) => {
     const userId = req.user._id;
     const chatId = req.params.chatId;
 
-    // RUN THE AI ENGINE 🔥
     const ai = await conversationLoop.processMessage(message, userId);
 
-    // Save bot message
     const botMessage = new Message({
       chat: chatId,
       sender: "bot",
@@ -95,7 +92,6 @@ router.post('/:chatId/botMessage', async (req, res) => {
 
     await botMessage.save();
 
-    // Return AI result to frontend
     res.json({
       reply: ai.reply,
       emotion: ai.emotion,
@@ -105,6 +101,48 @@ router.post('/:chatId/botMessage', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Bot failed to respond' });
+  }
+});
+
+// -------------------------
+// Delete a chat
+// -------------------------
+router.delete('/:chatId', async (req, res) => {
+  try {
+    const { chatId } = req.params;
+
+    const chat = await Chat.findOne({ _id: chatId, userId: req.user._id });
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' });
+    }
+
+    await Message.deleteMany({ chat: chatId });
+    await Chat.findByIdAndDelete(chatId);
+
+    res.json({ message: 'Chat deleted successfully' });
+  } catch (err) {
+    console.error('Delete chat error:', err);
+    res.status(500).json({ message: 'Server error deleting chat' });
+  }
+});
+
+// -------------------------
+// Rename a chat
+// -------------------------
+router.patch('/:id', async (req, res) => {
+  try {
+    const chat = await Chat.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      { title: req.body.title },
+      { new: true }
+    );
+
+    if (!chat) return res.status(404).json({ message: "Chat not found" });
+
+    res.json({ message: "Chat renamed", chat });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

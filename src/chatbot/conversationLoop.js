@@ -4,31 +4,38 @@ const generateResponse = require('../modules/responseGenerator');
 const recommendForEmotion = require('../modules/resourceRecommender');
 const ChatHistory = require('../models/ChatHistory');
 const Message = require('../models/Message');
-const checkForCrisis = require('../modules/safetyFilter');
 const { createMemory, queryMemory } = require('../modules/vectorMemory');
+const checkForCrisis = require('../modules/safetyFilter');  // FIXED ❗ no getSafetyLevel
 
 class ConversationLoop {
   constructor() {
     this.context = {}; // userId -> { history: [], lastEmotion: "" }
   }
 
+  // Load last 200 messages for a user
   async loadLongTermMemory(userId) {
     try {
-      // simple aggregation using messages
-      const msgs = await Message.find({ userId }).sort({ createdAt: -1 }).limit(200);
-      if (!msgs || msgs.length === 0) {
+      const msgs = await Message.find({ chatUserId: userId })
+        .sort({ createdAt: -1 })
+        .limit(200);
+
+      if (!msgs.length)
         return { dominantEmotion: "neutral", messageCount: 0, recentTopics: [] };
-      }
+
       const emotionCount = {};
       msgs.forEach(m => {
         const e = (m.emotion || "neutral").toLowerCase();
         emotionCount[e] = (emotionCount[e] || 0) + 1;
       });
-      const dominantEmotion = Object.entries(emotionCount).sort((a,b) => b[1]-a[1])[0]?.[0] || "neutral";
+
+      const dominantEmotion =
+        Object.entries(emotionCount).sort((a, b) => b[1] - a[1])[0][0] ||
+        "neutral";
+
       return {
         dominantEmotion,
         messageCount: msgs.length,
-        recentTopics: msgs.slice(0,5).map(m=>m.text)
+        recentTopics: msgs.slice(0, 5).map(m => m.text)
       };
     } catch (err) {
       console.error("Long-term memory error:", err.message);
@@ -36,91 +43,146 @@ class ConversationLoop {
     }
   }
 
+  // Last 3 messages for context
   summarizeContext(history) {
     if (!history || history.length < 2) return null;
-    const last = history.slice(-3).map(h => h.message);
-    return last.join(" → ");
+    return history.slice(-3).map(h => h.message).join(" → ");
   }
 
-  /**
-   * The main entrypoint. Returns { emotion, reply, resources, context, meta }
-   */
+  // Basic conversational cues
+  handleCues(message) {
+    const msg = message.toLowerCase();
+
+    if (/(hi|hello|hey|good morning|good afternoon|good evening)/.test(msg)) {
+      return "Hi! It’s good to hear from you. How are you feeling today? 💛";
+    }
+
+    if (/(thank you|thanks|thx)/.test(msg)) {
+      return "You're really welcome. Is there anything else on your mind? 😊";
+    }
+
+    if (/(bye|goodbye|see you)/.test(msg)) {
+      return "Bye for now — take care of yourself. I’m here anytime you want to talk. 🤍";
+    }
+
+    return null;
+  }
+
+  // Main message processor
   async processMessage(message, userId = null) {
     try {
-      if (!message || typeof message !== 'string') throw new Error('Invalid message');
+      if (!message || typeof message !== "string")
+        throw new Error("Invalid message");
 
-      if (!this.context[userId || 'guest']) {
-        this.context[userId || 'guest'] = { history: [], lastEmotion: 'neutral' };
-      }
-      const userCtx = this.context[userId || 'guest'];
+      const ctxKey = userId || "guest";
+      if (!this.context[ctxKey])
+        this.context[ctxKey] = { history: [], lastEmotion: "neutral" };
 
-      // safety check
-      if (checkForCrisis(message)) {
+      const userCtx = this.context[ctxKey];
+
+      // ---------------- SAFETY CHECK ----------------
+      const crisis = checkForCrisis(message);
+      const safetyLevel = crisis.level; // FIXED ❗
+
+      if (safetyLevel === 2) {
         return {
-          emotion: 'sadness',
+          emotion: "sadness",
           reply:
-            "I’m really glad you told me that. What you're feeling matters — and you deserve real support right now.\n\n" +
-            "📞 Kenya Lifeline Helpline: *1199*\n" +
-            "📞 Befrienders Worldwide: https://www.befrienders.org\n\n" +
-            "Please talk to someone who can help keep you safe. You are not alone.",
+            "I'm really glad you told me this. What you're feeling is serious, and you deserve real support right now.\n\n" +
+            "❤️ Please reach out to someone who can help keep you safe:\n" +
+            "📞 Kenya Lifeline Hotline: 1199\n" +
+            "💛 Befrienders Kenya: https://www.befrienders.org\n\n" +
+            "You’re not alone. I’m here with you.",
           resources: [],
           context: null,
-          meta: { severity: 'high', tone: 'calm' }
+          meta: { severity: "high", tone: "calm" }
         };
       }
 
-      // analyze emotion & confidence
-      const emotionResult = await analyzeEmotion(message); // { emotion, confidence }
-      const { emotion, confidence } = emotionResult;
+      if (safetyLevel === 1) {
+        return {
+          emotion: "sadness",
+          reply:
+            "I hear you… and it sounds like you're carrying something heavy. If you’re comfortable, we can talk about it. What happened?",
+          resources: [],
+          context: null,
+          meta: { severity: "medium", tone: "warm" }
+        };
+      }
 
-      // short context
-      const tempHistory = userCtx.history.concat({ message });
+      // ---------------- Conversational cues ----------------
+      const cueReply = this.handleCues(message);
+      if (cueReply) {
+        return {
+          emotion: "neutral",
+          reply: cueReply,
+          resources: [],
+          context: null,
+          meta: { severity: "low", tone: "friendly" }
+        };
+      }
+
+      // ---------------- Emotion Detection ----------------
+      const { emotion, confidence } = await analyzeEmotion(message);
+
+      // Short-term context
+      const tempHistory = [...userCtx.history, { message }];
       const shortContext = this.summarizeContext(tempHistory);
 
-      // long-term memory
+      // Long-term memory
       const longTerm = userId ? await this.loadLongTermMemory(userId) : null;
 
-      // vector memory: create an 'understanding' (NOT raw message)
-      // Example: "User feels X about Y" or short summary
-      const understanding = `${emotion} — ${message.slice(0, 200)}`; // keep short
+      // Vector memory
       if (userId) {
-        try { await createMemory(userId, understanding, { source: 'auto' }); } catch(e) { /* ignore */ }
+        try {
+          await createMemory(
+            userId,
+            `${emotion} — ${message.slice(0, 200)}`,
+            { source: "auto" }
+          );
+        } catch (_) {}
       }
 
-      // query vector memory for related understandings
-      let relatedMemories = [];
-      if (userId) {
-        relatedMemories = await queryMemory(userId, message, 3);
-      }
+      const relatedMemories = userId
+        ? await queryMemory(userId, message, 3)
+        : [];
 
-      // pass longTerm + additional memory summary into generator
-      const genOptions = {
-        personality: (longTerm && longTerm.personality) || 'warm' ,
-        rawMessage: message        
-      };
+      // ---------------- AI Response ----------------
+      const genResult = await generateResponse(
+        { emotion, confidence },
+        shortContext,
+        { ...longTerm, relatedMemories },
+        {
+          personality: (longTerm && longTerm.personality) || "warm",
+          rawMessage: message
+        }
+      );
 
-      const genResult = generateResponse(emotionResult, shortContext, { ...longTerm, relatedMemories }, genOptions);
-      // genResult may be object { reply, meta }
+      const replyText =
+        genResult?.reply ||
+        "I’m here with you. Can you tell me a bit more about what you mean?";
+      const meta = genResult?.meta || {};
 
-      const replyText = (genResult && genResult.reply) ? genResult.reply : (typeof genResult === 'string' ? genResult : "Sorry, I didn't quite catch that.");
-      const meta = (genResult && genResult.meta) ? genResult.meta : {};
-
-      // resource recommendations
+      // ---------------- Resource Recommendations ----------------
       const resources = recommendForEmotion(emotion);
 
-      // store chat history
-      const record = new ChatHistory({
+      // ---------------- Save message ----------------
+      await ChatHistory.create({
         userId: userId || null,
         message,
         botReply: replyText,
         emotion,
         meta: { resourcesReturned: resources.length, ...meta }
       });
-      await record.save();
 
-      // update in-memory context
-      userCtx.history.push({ message, reply: replyText, emotion, createdAt: new Date() });
-      userCtx.lastEmotion = emotion;
+      // Update memory
+      userCtx.history.push({
+        message,
+        reply: replyText,
+        emotion,
+        createdAt: new Date()
+      });
+
       if (userCtx.history.length > 8) userCtx.history.shift();
 
       return {
@@ -130,20 +192,24 @@ class ConversationLoop {
         context: shortContext,
         meta
       };
-
     } catch (err) {
-      console.error('ConversationLoop error:', err.message);
-      return { emotion: 'neutral', reply: "Sorry — I had trouble processing that. Could you try again?", resources: [], context: null };
+      console.error("ConversationLoop error:", err.message);
+
+      return {
+        emotion: "neutral",
+        reply: "Sorry — something went wrong while processing that. Could you try again?",
+        resources: [],
+        context: null
+      };
     }
   }
 
   getRecentHistory(userId = null) {
-    const userCtx = this.context[userId || 'guest'];
-    return userCtx ? userCtx.history : [];
+    return this.context[userId || "guest"]?.history || [];
   }
 
   clearContext(userId = null) {
-    delete this.context[userId || 'guest'];
+    delete this.context[userId || "guest"];
   }
 }
 

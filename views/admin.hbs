@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindHaven Admin Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
+  <style>
+    .admin-container {
+      min-height: 100vh;
+      background: var(--gray-50);
+      padding: 2rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .admin-header h1 {
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    .admin-logout {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .admin-logout:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .section-title {
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 3px solid var(--secondary);
+      display: inline-block;
+    }
+
+    .feedback-container {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .feedback-item {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      transition: all 0.2s;
+    }
+
+    .feedback-item:hover {
+      background-color: var(--gray-50);
+    }
+
+    .feedback-item:last-child {
+      border-bottom: none;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.75rem;
+    }
+
+    .feedback-user {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 1rem;
+    }
+
+    .feedback-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .feedback-rating {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .star {
+      color: var(--secondary);
+      font-size: 1.1rem;
+      text-shadow: 0 0 5px rgba(251, 133, 0, 0.2);
+    }
+
+    .no-rating {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    .feedback-message {
+      color: var(--gray-800);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .no-feedback {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      color: var(--text-dark);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--secondary);
+    }
+
+    /* Dark theme support */
+    .dark-theme .admin-container {
+      background: #121212;
+    }
+
+    .dark-theme .admin-header h1 {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .stat-card {
+      background: #1e1e1e;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .section-title {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .feedback-container {
+      background: #1e1e1e;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-theme .feedback-item {
+      border-bottom-color: #333;
+    }
+
+    .dark-theme .feedback-item:hover {
+      background-color: #2a2a2a;
+    }
+
+    .dark-theme .feedback-user {
+      color: #e0e0e0;
+    }
+
+    .dark-theme .feedback-message {
+      color: #b0b0b0;
+    }
+
+    .dark-theme .filter-btn {
+      background: #2a2a2a;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .filter-btn.active {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .pagination-btn {
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      color: var(--text-dark);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pagination-btn:hover {
+      background: var(--gray-100);
+      border-color: var(--secondary);
+    }
+
+    .pagination-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    .dark-theme .pagination-btn {
+      background: #2a2a2a;
+      border-color: #333;
+      color: #e0e0e0;
+    }
+
+    .dark-theme .pagination-btn:hover {
+      background: #333;
+      border-color: var(--secondary);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <h1><span class="mindhaven-logo">MindHaven</span> Admin</h1>
+    <form method="POST" action="/api/auth/admin/logout" style="display: inline;">
+      <button type="submit" class="admin-logout">Logout</button>
+    </form>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <!-- Total Users -->
+    <div class="stat-card">
+      <i class="bi bi-people-fill stat-icon"></i>
+      <div class="stat-number">{{totalUsers}}</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+
+    <!-- Total Feedback -->
+    <div class="stat-card">
+      <i class="bi bi-chat-dots-fill stat-icon"></i>
+      <div class="stat-number">{{totalFeedback}}</div>
+      <div class="stat-label">Total Feedback Submissions</div>
+    </div>
+
+    <!-- Average Rating -->
+    <div class="stat-card">
+      <i class="bi bi-star-fill stat-icon"></i>
+      <div class="stat-number">{{averageRating}}</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+
+  <!-- Feedback Section -->
+  <div style="margin-top: 3rem;">
+    <h2 class="section-title">Recent Feedback</h2>
+
+    {{#if feedbackList}}
+      <div class="feedback-container">
+        {{#each feedbackList}}
+          <div class="feedback-item">
+            <div class="feedback-header">
+              <div>
+                <div class="feedback-user">Anonymous Feedback</div>
+                <div class="feedback-date">{{formatDate this.createdAt}}</div>
+              </div>
+              {{#if this.rating}}
+                <div class="feedback-rating">
+                  {{#loop this.rating}}
+                    <span class="star">★</span>
+                  {{/loop}}
+                </div>
+              {{else}}
+                <div class="no-rating">No rating</div>
+              {{/if}}
+            </div>
+            <div class="feedback-message">{{this.message}}</div>
+          </div>
+        {{/each}}
+      </div>
+
+      {{#if showPagination}}
+        <div class="pagination">
+          {{#if hasPrevPage}}
+            <a href="?page={{prevPage}}" class="pagination-btn">← Previous</a>
+          {{/if}}
+          
+          <span style="display: flex; align-items: center; padding: 0.5rem 0.75rem; color: var(--text-muted);">
+            Page {{currentPage}} of {{totalPages}}
+          </span>
+
+          {{#if hasNextPage}}
+            <a href="?page={{nextPage}}" class="pagination-btn">Next →</a>
+          {{/if}}
+        </div>
+      {{/if}}
+    {{else}}
+      <div class="feedback-container">
+        <div class="no-feedback">
+          <i class="bi bi-inbox" style="font-size: 3rem; color: var(--gray-300); display: block; margin-bottom: 1rem;"></i>
+          <p>No feedback submissions yet.</p>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<!-- Theme Toggle -->
+<script>
+  // Check for saved dark theme preference
+  const darkThemeEnabled = localStorage.getItem('darkTheme') === 'true';
+  const html = document.documentElement;
+  const darkStylesheet = document.getElementById('darkThemeStylesheet');
+
+  if (darkThemeEnabled) {
+    html.classList.add('dark-theme');
+    darkStylesheet.disabled = false;
+  }
+
+  // Optional: Add a theme toggle button if needed
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'D' && e.ctrlKey) {
+      e.preventDefault();
+      darkThemeEnabled ? 
+        (html.classList.remove('dark-theme'), darkStylesheet.disabled = true, localStorage.setItem('darkTheme', 'false')) :
+        (html.classList.add('dark-theme'), darkStylesheet.disabled = false, localStorage.setItem('darkTheme', 'true'));
+    }
+  });
+</script>
+
+</body>
+</html>
+

@@ -1,12 +1,91 @@
 {
   "sadness": [
-    { "title": "How to cope with sadness", "url": "https://www.example.com/sadness" },
-    { "title": "Local support groups", "url": "https://www.example.com/support" }
+    {
+      "title": "Befrienders Kenya – free & confidential emotional support / suicide prevention",
+      "url": "https://www.befrienderskenya.org",
+      "phone": "0722178177"
+    },
+    {
+      "title": "Kenya Red Cross – 24/7 Mental‑Health / Crisis Hotline",
+      "url": "https://www.redcross.or.ke/chat-care/",
+      "phone": "1199"
+    },
+    {
+      "title": "Mental 360 Kenya – counselling & mental‑health support",
+      "url": "https://www.mental360.or.ke"
+    },
+    {
+      "title": "Centre for Suicide Research and Intervention (CSRI Kenya)",
+      "url": "https://csricentre.org",
+      "phone": "+254703388130"
+    },
+    {
+      "title": "Basic Needs Watch – psychosocial support & mental‑health programs",
+      "url": "https://www.basicneedswatch.org"
+    }
   ],
-  "joy": [
-    { "title": "Celebrate your wins", "url": "https://www.example.com/celebrate" }
+  "anxiety": [
+    {
+      "title": "one2one – counselling & psychosocial support",
+      "url": "https://www.one2one.org",
+      "phone": "1190"
+    },
+    {
+      "title": "Niskize – suicide & mental‑health emergency line",
+      "phone": "0900620800"
+    },
+    {
+      "title": "Emergency Medicine Kenya Foundation (EMKF) – crisis mental‑health response",
+      "phone": "0800723253"
+    },
+    {
+      "title": "Mind Matters Kenya – counselling & support line",
+      "url": "https://mindmatterske.org",
+      "phone": "0718782333"
+    }
   ],
   "neutral": [
-    { "title": "Mindfulness basics", "url": "https://www.example.com/mindfulness" }
+    {
+      "title": "Kenya Red Cross – general support & referral for mental‑health",
+      "url": "https://www.redcross.or.ke"
+    },
+    {
+      "title": "Mental 360 Kenya – wellness & mental‑health resources",
+      "url": "https://www.mental360.or.ke"
+    },
+    {
+      "title": "TETI Counselling Guides – free downloadable mental‑health/self‑help resources",
+      "url": "https://www.teti.ac.ke/resources"
+    }
+  ],
+  "crisis": [
+    {
+      "title": "EMKF – Emergency Medicine Kenya Foundation (24/7 psychosocial crisis line)",
+      "phone": "0800723253"
+    },
+    {
+      "title": "National Substance Abuse Hotline",
+      "phone": "1192"
+    },
+    {
+      "title": "Childline Kenya – child abuse & youth crisis line",
+      "phone": "116"
+    }
+  ],
+  "youth": [
+    {
+      "title": "KNH Youth Centre – youth counselling & psychiatric services (for ≤ 25 years)",
+      "url": "https://www.knh.or.ke/services/youth-centre"
+    },
+    {
+      "title": "Amani Counselling Centre & Training Institute – affordable youth & trauma counselling",
+      "url": "https://amanicentre.org"
+    }
+  ],
+  "online_global": [
+    {
+      "title": "Global directory – Africa-wide mental‑health helplines",
+      "url": "https://www.mymindmyfunk.org/helplines"
+    }
   ]
 }
