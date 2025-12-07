@@ -1,7 +1,17 @@
 {{> header user=user}}
 
 <main class="feedback-page">
+<<<<<<< Updated upstream
   <h2>Send Feedback</h2>
+=======
+  <div class="feedback-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 style="margin: 0;">Send Feedback</h2>
+      <a href="/chat" class="btn btn-outline-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <i class="bi bi-arrow-left"></i> Back to Chat
+      </a>
+    </div>
+>>>>>>> Stashed changes
 
   {{#if error}}
     <div class="alert alert-error">{{error}}</div>

@@ -17,7 +17,18 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "hbs": "^4.2.0",
+<<<<<<< Updated upstream
     "mongoose": "^8.19.3"
+=======
+    "jsonwebtoken": "^9.0.2",
+    "luxon": "^3.7.2",
+    "mongoose": "^8.19.3",
+    "natural": "^8.1.0",
+    "node-nlp": "^5.0.0-alpha.5",
+    "sentiment": "^5.0.2",
+    "wink-eng-lite-web-model": "^1.8.1",
+    "wink-nlp": "^2.4.0"
+>>>>>>> Stashed changes
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

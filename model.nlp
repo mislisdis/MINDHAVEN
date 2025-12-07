@@ -1,0 +1,1004 @@
+{
+  "settings": {
+    "languages": [
+      "en"
+    ],
+    "forceNER": false,
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "executeActionsBeforeAnswers": false,
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "en"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "en": {
+        "settings": {
+          "locale": "en",
+          "trainByDomain": false,
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "hi": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "hello": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "hey": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "good,morn": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "afternoon,good": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "even,good": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "thank": {
+            "intent": "gratitude",
+            "domain": "default"
+          },
+          "thank,you": {
+            "intent": "gratitude",
+            "domain": "default"
+          },
+          "appreci,it": {
+            "intent": "gratitude",
+            "domain": "default"
+          },
+          "bye": {
+            "intent": "farewell",
+            "domain": "default"
+          },
+          "goodby": {
+            "intent": "farewell",
+            "domain": "default"
+          },
+          "see,you": {
+            "intent": "farewell",
+            "domain": "default"
+          },
+          "later,talk": {
+            "intent": "farewell",
+            "domain": "default"
+          },
+          "yes": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "yeah": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "yep": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "sure": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "ok": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "okay": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "absolut": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "definit": {
+            "intent": "affirm",
+            "domain": "default"
+          },
+          "no": {
+            "intent": "deny",
+            "domain": "default"
+          },
+          "nope": {
+            "intent": "deny",
+            "domain": "default"
+          },
+          "nah": {
+            "intent": "deny",
+            "domain": "default"
+          },
+          "not,realli": {
+            "intent": "deny",
+            "domain": "default"
+          },
+          "exam,fail,i,my": {
+            "intent": "exam_failure",
+            "domain": "default"
+          },
+          "flunk,i": {
+            "intent": "exam_failure",
+            "domain": "default"
+          },
+          "bad,grade": {
+            "intent": "exam_failure",
+            "domain": "default"
+          },
+          "poor,result": {
+            "intent": "exam_failure",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "greetings": "default",
+          "gratitude": "default",
+          "farewell": "default",
+          "affirm": "default",
+          "deny": "default",
+          "exam_failure": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "hi",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "hello",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "hey",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good morning",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good afternoon",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good evening",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "thanks",
+            "intent": "gratitude"
+          },
+          {
+            "domain": "default",
+            "utterance": "thank you",
+            "intent": "gratitude"
+          },
+          {
+            "domain": "default",
+            "utterance": "appreciate it",
+            "intent": "gratitude"
+          },
+          {
+            "domain": "default",
+            "utterance": "bye",
+            "intent": "farewell"
+          },
+          {
+            "domain": "default",
+            "utterance": "goodbye",
+            "intent": "farewell"
+          },
+          {
+            "domain": "default",
+            "utterance": "see you",
+            "intent": "farewell"
+          },
+          {
+            "domain": "default",
+            "utterance": "talk later",
+            "intent": "farewell"
+          },
+          {
+            "domain": "default",
+            "utterance": "yes",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "yeah",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "yep",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "sure",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "ok",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "okay",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "absolutely",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "definitely",
+            "intent": "affirm"
+          },
+          {
+            "domain": "default",
+            "utterance": "no",
+            "intent": "deny"
+          },
+          {
+            "domain": "default",
+            "utterance": "nope",
+            "intent": "deny"
+          },
+          {
+            "domain": "default",
+            "utterance": "nah",
+            "intent": "deny"
+          },
+          {
+            "domain": "default",
+            "utterance": "not really",
+            "intent": "deny"
+          },
+          {
+            "domain": "default",
+            "utterance": "i failed my exam",
+            "intent": "exam_failure"
+          },
+          {
+            "domain": "default",
+            "utterance": "i failed my exams",
+            "intent": "exam_failure"
+          },
+          {
+            "domain": "default",
+            "utterance": "i flunked",
+            "intent": "exam_failure"
+          },
+          {
+            "domain": "default",
+            "utterance": "bad grades",
+            "intent": "exam_failure"
+          },
+          {
+            "domain": "default",
+            "utterance": "poor results",
+            "intent": "exam_failure"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "hi": 1,
+              "hello": 1,
+              "hey": 1,
+              "good": 1,
+              "morn": 1,
+              "afternoon": 1,
+              "even": 1,
+              "thank": 1,
+              "you": 1,
+              "appreci": 1,
+              "it": 1,
+              "bye": 1,
+              "goodby": 1,
+              "see": 1,
+              "talk": 1,
+              "later": 1,
+              "yes": 1,
+              "yeah": 1,
+              "yep": 1,
+              "sure": 1,
+              "ok": 1,
+              "okay": 1,
+              "absolut": 1,
+              "definit": 1,
+              "no": 1,
+              "nope": 1,
+              "nah": 1,
+              "not": 1,
+              "realli": 1,
+              "i": 1,
+              "fail": 1,
+              "my": 1,
+              "exam": 1,
+              "flunk": 1,
+              "bad": 1,
+              "grade": 1,
+              "poor": 1,
+              "result": 1
+            },
+            "intents": {
+              "greetings": 1,
+              "gratitude": 1,
+              "farewell": 1,
+              "affirm": 1,
+              "deny": 1,
+              "exam_failure": 1
+            },
+            "intentFeatures": {
+              "greetings": {
+                "hi": 1,
+                "hello": 1,
+                "hey": 1,
+                "good": 1,
+                "morn": 1,
+                "afternoon": 1,
+                "even": 1
+              },
+              "gratitude": {
+                "thank": 1,
+                "you": 1,
+                "appreci": 1,
+                "it": 1
+              },
+              "farewell": {
+                "bye": 1,
+                "goodby": 1,
+                "see": 1,
+                "you": 1,
+                "talk": 1,
+                "later": 1
+              },
+              "affirm": {
+                "yes": 1,
+                "yeah": 1,
+                "yep": 1,
+                "sure": 1,
+                "ok": 1,
+                "okay": 1,
+                "absolut": 1,
+                "definit": 1
+              },
+              "deny": {
+                "no": 1,
+                "nope": 1,
+                "nah": 1,
+                "not": 1,
+                "realli": 1
+              },
+              "exam_failure": {
+                "i": 1,
+                "fail": 1,
+                "my": 1,
+                "exam": 1,
+                "flunk": 1,
+                "bad": 1,
+                "grade": 1,
+                "poor": 1,
+                "result": 1
+              }
+            },
+            "featuresToIntent": {
+              "hi": [
+                "greetings"
+              ],
+              "hello": [
+                "greetings"
+              ],
+              "hey": [
+                "greetings"
+              ],
+              "good": [
+                "greetings"
+              ],
+              "morn": [
+                "greetings"
+              ],
+              "afternoon": [
+                "greetings"
+              ],
+              "even": [
+                "greetings"
+              ],
+              "thank": [
+                "gratitude"
+              ],
+              "you": [
+                "gratitude",
+                "farewell"
+              ],
+              "appreci": [
+                "gratitude"
+              ],
+              "it": [
+                "gratitude"
+              ],
+              "bye": [
+                "farewell"
+              ],
+              "goodby": [
+                "farewell"
+              ],
+              "see": [
+                "farewell"
+              ],
+              "talk": [
+                "farewell"
+              ],
+              "later": [
+                "farewell"
+              ],
+              "yes": [
+                "affirm"
+              ],
+              "yeah": [
+                "affirm"
+              ],
+              "yep": [
+                "affirm"
+              ],
+              "sure": [
+                "affirm"
+              ],
+              "ok": [
+                "affirm"
+              ],
+              "okay": [
+                "affirm"
+              ],
+              "absolut": [
+                "affirm"
+              ],
+              "definit": [
+                "affirm"
+              ],
+              "no": [
+                "deny"
+              ],
+              "nope": [
+                "deny"
+              ],
+              "nah": [
+                "deny"
+              ],
+              "not": [
+                "deny"
+              ],
+              "realli": [
+                "deny"
+              ],
+              "i": [
+                "exam_failure"
+              ],
+              "fail": [
+                "exam_failure"
+              ],
+              "my": [
+                "exam_failure"
+              ],
+              "exam": [
+                "exam_failure"
+              ],
+              "flunk": [
+                "exam_failure"
+              ],
+              "bad": [
+                "exam_failure"
+              ],
+              "grade": [
+                "exam_failure"
+              ],
+              "poor": [
+                "exam_failure"
+              ],
+              "result": [
+                "exam_failure"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "hi",
+                "hello",
+                "hey",
+                "good",
+                "morn",
+                "afternoon",
+                "even",
+                "thank",
+                "you",
+                "appreci",
+                "it",
+                "bye",
+                "goodby",
+                "see",
+                "talk",
+                "later",
+                "yes",
+                "yeah",
+                "yep",
+                "sure",
+                "ok",
+                "okay",
+                "absolut",
+                "definit",
+                "no",
+                "nope",
+                "nah",
+                "not",
+                "realli",
+                "i",
+                "fail",
+                "my",
+                "exam",
+                "flunk",
+                "bad",
+                "grade",
+                "poor",
+                "result"
+              ],
+              "intents": [
+                "greetings",
+                "gratitude",
+                "farewell",
+                "affirm",
+                "deny",
+                "exam_failure"
+              ],
+              "perceptrons": [
+                [
+                  11.807136535644531,
+                  11.789336204528809,
+                  11.745379447937012,
+                  8.983420372009277,
+                  3.0060932636260986,
+                  2.9949119091033936,
+                  2.9821088314056396,
+                  -2.3483622074127197,
+                  -1.5655969381332397,
+                  -1.2641322612762451,
+                  -1.2641322612762451,
+                  -2.3042924404144287,
+                  -2.298261880874634,
+                  -0.8851528763771057,
+                  -1.206054449081421,
+                  -1.206054449081421,
+                  -2.2887744903564453,
+                  -2.2814972400665283,
+                  -2.2737841606140137,
+                  -2.2656447887420654,
+                  -2.257084846496582,
+                  -2.2481131553649902,
+                  -2.238738536834717,
+                  -2.2289681434631348,
+                  -2.2188127040863037,
+                  -2.208279609680176,
+                  -2.197378396987915,
+                  -1.1340739727020264,
+                  -1.1340739727020264,
+                  -1.3358614444732666,
+                  -0.3822557330131531,
+                  -0.3822557330131531,
+                  -0.3822557330131531,
+                  -0.9311636686325073,
+                  -1.1329208612442017,
+                  -1.1329208612442017,
+                  -1.13230299949646,
+                  -1.13230299949646,
+                  2.2779656838870683
+                ],
+                [
+                  -0.7623388767242432,
+                  -0.7590377330780029,
+                  -0.7556033730506897,
+                  -0.5852096080780029,
+                  -0.19742903113365173,
+                  -0.1943245828151703,
+                  -0.192997545003891,
+                  12.892725944519043,
+                  0.931111752986908,
+                  6.748096942901611,
+                  6.748096942901611,
+                  -0.8649278283119202,
+                  -0.8512105345726013,
+                  -2.652127742767334,
+                  -0.503445029258728,
+                  -0.503445029258728,
+                  -0.7929884195327759,
+                  -0.7883656620979309,
+                  -0.7864422798156738,
+                  -0.7848689556121826,
+                  -0.7831525206565857,
+                  -0.7812936305999756,
+                  -0.779293417930603,
+                  -0.7771530151367188,
+                  -0.7748737931251526,
+                  -0.7724571228027344,
+                  -0.7699048519134521,
+                  -0.3919599950313568,
+                  -0.3919599950313568,
+                  -0.5033310651779175,
+                  -0.19916196167469025,
+                  -0.19916196167469025,
+                  -0.19916196167469025,
+                  -0.28140175342559814,
+                  -0.3915109932422638,
+                  -0.3915109932422638,
+                  -0.39140546321868896,
+                  -0.39140546321868896,
+                  0.7866792356459211
+                ],
+                [
+                  -1.7240675687789917,
+                  -1.7153264284133911,
+                  -1.7062911987304688,
+                  -1.3287521600723267,
+                  -0.4459112286567688,
+                  -0.4427708089351654,
+                  -0.43937477469444275,
+                  -5.297233581542969,
+                  3.691540479660034,
+                  -0.875348687171936,
+                  -0.875348687171936,
+                  12.305496215820312,
+                  12.285449981689453,
+                  8.65676212310791,
+                  6.2430524826049805,
+                  6.2430524826049805,
+                  -1.8007636070251465,
+                  -1.794960379600525,
+                  -1.790661096572876,
+                  -1.7860857248306274,
+                  -1.781162977218628,
+                  -1.7758979797363281,
+                  -1.7702945470809937,
+                  -1.764358639717102,
+                  -1.7580955028533936,
+                  -1.7515108585357666,
+                  -1.7446101903915405,
+                  -0.8908157348632812,
+                  -0.8908157348632812,
+                  -1.087416410446167,
+                  -0.3689485192298889,
+                  -0.3689485192298889,
+                  -0.3689485192298889,
+                  -0.6939330697059631,
+                  -0.8905180096626282,
+                  -0.8905180096626282,
+                  -0.8903504014015198,
+                  -0.8903504014015198,
+                  1.7836157091758857
+                ],
+                [
+                  -4.81235933303833,
+                  -4.790075302124023,
+                  -4.766901016235352,
+                  -3.6852338314056396,
+                  -1.2465957403182983,
+                  -1.2231066226959229,
+                  -1.2148191928863525,
+                  -4.759349346160889,
+                  -2.8517284393310547,
+                  -2.443824291229248,
+                  -2.443824291229248,
+                  -4.705395221710205,
+                  -4.678524017333984,
+                  -2.004148483276367,
+                  -2.426666021347046,
+                  -2.426666021347046,
+                  9.333805084228516,
+                  9.332104682922363,
+                  9.304641723632812,
+                  9.275453567504883,
+                  9.244566917419434,
+                  9.21200942993164,
+                  9.177803993225098,
+                  9.141984939575195,
+                  -4.891721248626709,
+                  -4.875733852386475,
+                  -4.8588032722473145,
+                  -2.487041711807251,
+                  -2.487041711807251,
+                  -3.026237964630127,
+                  -1.015944480895996,
+                  -1.015944480895996,
+                  -1.015944480895996,
+                  -1.9443354606628418,
+                  -2.4815313816070557,
+                  -2.4815313816070557,
+                  -2.4800219535827637,
+                  -2.4800219535827637,
+                  4.920087908503382
+                ],
+                [
+                  -2.130204916000366,
+                  -2.123774528503418,
+                  -2.1168999671936035,
+                  -1.7367557287216187,
+                  -0.6137619614601135,
+                  -0.5706616044044495,
+                  -0.5362290740013123,
+                  -2.1203601360321045,
+                  -1.309615135192871,
+                  -1.0972840785980225,
+                  -1.0972840785980225,
+                  -2.0984721183776855,
+                  -2.0897960662841797,
+                  -0.8359930515289307,
+                  -1.0712833404541016,
+                  -1.0712833404541016,
+                  -2.076652765274048,
+                  -2.066777467727661,
+                  -2.056515693664551,
+                  -2.0458788871765137,
+                  -2.0348784923553467,
+                  -2.023524284362793,
+                  -2.0118274688720703,
+                  -1.9997999668121338,
+                  11.981072425842285,
+                  11.962753295898438,
+                  11.918255805969238,
+                  6.073058128356934,
+                  6.073058128356934,
+                  -1.5399409532546997,
+                  -0.6171464920043945,
+                  -0.6171464920043945,
+                  -0.6171464920043945,
+                  -0.8828493356704712,
+                  -1.1822235584259033,
+                  -1.1822235584259033,
+                  -1.1766510009765625,
+                  -1.1766510009765625,
+                  2.12921550494851
+                ],
+                [
+                  -1.044712781906128,
+                  -1.0274348258972168,
+                  -1.0103110074996948,
+                  -1.2346606254577637,
+                  -0.3937484920024872,
+                  -0.3529438078403473,
+                  -0.3425353765487671,
+                  -1.0933305025100708,
+                  -0.8110812902450562,
+                  -0.6151595711708069,
+                  -0.6151595711708069,
+                  -0.9542737007141113,
+                  -0.9432000517845154,
+                  -0.42983847856521606,
+                  -0.5714834332466125,
+                  -0.5714834332466125,
+                  -0.9218724966049194,
+                  -0.91169673204422,
+                  -0.9035312533378601,
+                  -0.8963542580604553,
+                  -0.8907098174095154,
+                  -0.8863139152526855,
+                  -0.8831239938735962,
+                  -0.8808475136756897,
+                  -0.8784335851669312,
+                  -0.8758420944213867,
+                  -0.8730757832527161,
+                  -0.4550299048423767,
+                  -0.4550299048423767,
+                  7.656452178955078,
+                  1.9164862632751465,
+                  1.9164862632751465,
+                  1.9164862632751465,
+                  5.739530086517334,
+                  6.700685977935791,
+                  6.700685977935791,
+                  6.7003631591796875,
+                  6.7003631591796875,
+                  0.8818433673612015
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "en",
+        "hi"
+      ],
+      [
+        "en",
+        "hello"
+      ],
+      [
+        "en",
+        "hey"
+      ],
+      [
+        "en",
+        "good morning"
+      ],
+      [
+        "en",
+        "good afternoon"
+      ],
+      [
+        "en",
+        "good evening"
+      ],
+      [
+        "en",
+        "thanks"
+      ],
+      [
+        "en",
+        "thank you"
+      ],
+      [
+        "en",
+        "appreciate it"
+      ],
+      [
+        "en",
+        "bye"
+      ],
+      [
+        "en",
+        "goodbye"
+      ],
+      [
+        "en",
+        "see you"
+      ],
+      [
+        "en",
+        "talk later"
+      ],
+      [
+        "en",
+        "yes"
+      ],
+      [
+        "en",
+        "yeah"
+      ],
+      [
+        "en",
+        "yep"
+      ],
+      [
+        "en",
+        "sure"
+      ],
+      [
+        "en",
+        "ok"
+      ],
+      [
+        "en",
+        "okay"
+      ],
+      [
+        "en",
+        "absolutely"
+      ],
+      [
+        "en",
+        "definitely"
+      ],
+      [
+        "en",
+        "no"
+      ],
+      [
+        "en",
+        "nope"
+      ],
+      [
+        "en",
+        "nah"
+      ],
+      [
+        "en",
+        "not really"
+      ],
+      [
+        "en",
+        "i failed my exam"
+      ],
+      [
+        "en",
+        "i failed my exams"
+      ],
+      [
+        "en",
+        "i flunked"
+      ],
+      [
+        "en",
+        "bad grades"
+      ],
+      [
+        "en",
+        "poor results"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {}
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}

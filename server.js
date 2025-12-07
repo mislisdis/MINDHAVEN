@@ -43,9 +43,23 @@ app.use('/api/chatbot', require('./src/routes/chatbotRoutes'));
 app.use('/api/user', require('./src/routes/userRoutes'));
 app.use('/api/feedback', require('./src/routes/feedbackRoutes'));
 app.use('/api/auth', require('./src/routes/authRoutes'));
+<<<<<<< Updated upstream
+=======
+app.use('/api/chats', requireAuth, chatRoutes);
+app.use('/api/journal', require('./src/routes/journalRoutes'));
+>>>>>>> Stashed changes
 
 // UI route: redirect root to /chat
 app.get('/', (req, res) => res.redirect('/chat'));
+
+// Journal page route
+app.get('/journal', requireAuth, (req, res) => {
+  res.render('journal', {
+    layout: 'main',
+    user: req.user,
+    title: 'MindHaven Journal'
+  });
+});
 
 // Chat page route (pre-render messages)
 const { getChatHistory } = require('./src/controllers/chatbotController');

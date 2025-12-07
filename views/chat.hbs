@@ -1,9 +1,70 @@
 <!-- views/chat.hbs -->
 
+<<<<<<< Updated upstream
 <div id="chatMessages">
     {{#each messages}}
         {{> chatbotCard sender=this.sender text=this.text emotion=this.emotion}}
     {{/each}}
+=======
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/darkstyles.css" id="darkThemeStylesheet" disabled>
+
+<div class="chat-container">
+
+  <!-- Sidebar -->
+  <aside class="chat-sidebar" id="chatSidebar">
+    <h3>Your Chats</h3>
+    <button id="newChatBtn">+ New Chat</button>
+    <div id="chatList"></div>
+
+    <!-- Logout Button at bottom -->
+    <div class="sidebar-footer">
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Chat Window -->
+  <section class="chat-main">
+    <!-- Header -->
+    <header class="chat-header">
+      <h2 class="mindhaven-logo" style="font-family: 'Satisfy', cursive;">MindHaven</h2>
+
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <!-- Journal Button -->
+        <a href="/journal" class="journal-btn" title="Go to Journal" style="margin: 0; width: auto; display: inline-block; padding: 0.6rem 1.2rem; background-color: var(--secondary); color: white; text-decoration: none; border-radius: 40px; font-weight: 700; font-size: 1rem; box-shadow: 0 2px 10px rgba(251,133,0,0.10); border: none;">
+          📓 Journal
+        </a>
+        <!-- Give Feedback Button -->
+        <a href="/feedback" class="feedback-btn" style="margin: 0; width: auto; display: inline-block; padding: 0.6rem 1rem; background-color: var(--secondary); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s ease;">
+          💬 Give Feedback
+        </a>
+        <!-- Theme Toggle Switch -->
+        <label class="theme-switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages">
+      <p class="text-muted">What's on your mind today?</p>
+    </div>
+
+    <!-- Bot Recommendation -->
+    <div class="bot-recommendation" id="recommendation"></div>
+
+    <!-- User Input -->
+    <form id="chatForm">
+      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required>
+      <button type="button" id="startRecording">🎤</button> <!-- Mic button -->
+      <button type="submit">Send</button>
+
+    </form>
+  </section>
+>>>>>>> Stashed changes
 </div>
 
 <div class="typing-indicator" id="typingIndicator" style="display:none;">
