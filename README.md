@@ -34,7 +34,7 @@ This project demonstrates practical skills in **full-stack development, API desi
   * Topics
   * Keywords
 
-## 📊 Emotional Analytics
+## Emotional Analytics
 
 * **Mood Timeline:** Tracks emotional trends over time
 * **Mood Board:** Calendar-based emotional visualization
