@@ -65,7 +65,7 @@ MindHaven follows a **three-tier architecture**:
 This modular design improves **scalability, maintainability, and performance**.
 
 
-# 🛠️ Tech Stack
+# Tech Stack
 
 * **Frontend:** Handlebars, JavaScript
 * **Backend:** Node.js, Express.js
@@ -106,14 +106,14 @@ PORT=5000
 ```
 
 
-# 🧪 Testing & Performance
+# Testing & Performance
 
 * Chatbot response time: **0.8–1.5 seconds**
 * Journal analysis processing: **< 2 seconds**
 * Emotion detection accuracy: **~75%**
 
 
-# 📈 What This Project Demonstrates
+# What This Project Demonstrates
 
 * Full-stack web development
 * API design and integration
@@ -143,12 +143,3 @@ PORT=5000
 
 This project was developed as part of an academic program and demonstrates the application of software engineering principles in building real-world solutions.
 
-
-If you want next, I can:
-
-✅ Add **GitHub badges (very recruiter-friendly)**
-✅ Add a **"Live Demo" section**
-✅ Add **screenshots placeholders (VERY important)**
-✅ Or tailor this specifically for **Deloitte / internships**
-
-Just say the word 😌
